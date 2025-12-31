@@ -1,4 +1,3 @@
-```javascript
 import React from "react";
 import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
@@ -50,8 +49,8 @@ const ProjectCard = ({
                 <div className='mt-4 flex flex-wrap gap-2'>
                     {tags.map((tag) => (
                         <p
-                            key={`${ name } -${ tag.name } `}
-                            className={`text - [14px] ${ tag.color } `}
+                            key={`${name}-${tag.name}`}
+                            className={`text-[14px] ${tag.color}`}
                         >
                             #{tag.name}
                         </p>
@@ -66,8 +65,8 @@ const Works = () => {
     return (
         <>
             <motion.div variants={textVariant()}>
-                <p className={`${ styles.sectionSubText } `}>My work</p>
-                <h2 className={`${ styles.sectionHeadText } `}>Projects.</h2>
+                <p className={`${styles.sectionSubText} `}>My work</p>
+                <h2 className={`${styles.sectionHeadText}`}>Projects.</h2>
             </motion.div>
 
             <div className='w-full flex'>
@@ -85,7 +84,7 @@ const Works = () => {
 
             <div className='mt-20 flex flex-wrap gap-7'>
                 {projects.map((project, index) => (
-                    <ProjectCard key={`project - ${ index } `} index={index} {...project} />
+                    <ProjectCard key={`project-${index}`} index={index} {...project} />
                 ))}
             </div>
         </>

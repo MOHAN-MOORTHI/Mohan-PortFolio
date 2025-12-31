@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import { styles } from "../styles";
-// import { EarthCanvas } from "./canvas"; // Will implement later
+import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
 
@@ -111,11 +111,7 @@ const Contact = () => {
                 variants={slideIn("right", "tween", 0.2, 1)}
                 className='xl:flex-1 xl:h-auto md:h-[550px] h-[350px]'
             >
-                {/* Earth Canvas would go here */}
-                <div className="w-full h-full flex justify-center items-center bg-[#100d25] rounded-2xl">
-                    <p className="text-secondary">3D Earth</p>
-                </div>
-                {/* <EarthCanvas /> */}
+                <EarthCanvas />
             </motion.div>
         </div>
     );

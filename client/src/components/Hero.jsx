@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 import { styles } from "../styles";
-// import { ComputersCanvas } from "./canvas"; // Will implement this later
+import { ComputersCanvas } from "./canvas";
 
 const Hero = () => {
     return (
@@ -25,13 +25,7 @@ const Hero = () => {
                 </div>
             </div>
 
-            {/* <ComputersCanvas /> */}
-            <div className="absolute inset-0 top-[400px] flex justify-center items-center z-[-1]">
-                {/* Fallback visual if 3D not loaded yet */}
-                <div className="text-secondary text-[20px]">
-                    {/* 3D Visuals Loading... */}
-                </div>
-            </div>
+            <ComputersCanvas />
 
 
             <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center'>
