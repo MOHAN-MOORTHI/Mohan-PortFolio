@@ -3,6 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import ProjectManager from '../components/admin/ProjectManager';
 import SkillManager from '../components/admin/SkillManager';
+import AboutManager from '../components/admin/AboutManager';
+
 import MessageManager from '../components/admin/MessageManager';
 
 const Dashboard = () => {
@@ -41,6 +43,14 @@ const Dashboard = () => {
                                 Skills
                             </button>
                         </li>
+                        <li style={{ marginBottom: '1rem' }}>
+                            <button
+                                onClick={() => setActiveTab('about')}
+                                style={{ ...tabBtnStyle, color: activeTab === 'about' ? 'var(--primary)' : 'white' }}
+                            >
+                                About Me
+                            </button>
+                        </li>
                         <li>
                             <button
                                 onClick={() => setActiveTab('messages')}
@@ -55,6 +65,7 @@ const Dashboard = () => {
                 <main>
                     {activeTab === 'projects' && <ProjectManager />}
                     {activeTab === 'skills' && <SkillManager />}
+                    {activeTab === 'about' && <AboutManager />}
                     {activeTab === 'messages' && <MessageManager />}
                 </main>
             </div>

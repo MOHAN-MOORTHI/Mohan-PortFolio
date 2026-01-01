@@ -159,4 +159,35 @@ router.delete('/contact/:id', auth, async (req, res) => {
     }
 });
 
+// --- ABOUT ROUTE ---
+const About = require('../models/About');
+
+router.get('/about', async (req, res) => {
+    try {
+        const about = await About.findOne();
+        res.json(about || { bio: '', imageUrl: '', resumeUrl: '' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.post('/about', auth, async (req, res) => {
+    try {
+        // Upsert: update if exists, otherwise create
+        let about = await About.findOne();
+        if (about) {
+            about.bio = req.body.bio;
+            about.imageUrl = req.body.imageUrl;
+            about.resumeUrl = req.body.resumeUrl;
+            await about.save();
+        } else {
+            about = new About(req.body);
+            await about.save();
+        }
+        res.json(about);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;

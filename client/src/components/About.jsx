@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 const About = () => {
+    const [about, setAbout] = useState({ bio: '', imageUrl: '', resumeUrl: '' });
+
+    useEffect(() => {
+        const fetchAbout = async () => {
+            try {
+                const res = await axios.get('/api/about');
+                if (res.data) setAbout(res.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchAbout();
+    }, []);
+
     return (
         <section id="about" className="section">
             <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
@@ -21,8 +36,11 @@ const About = () => {
                         viewport={{ once: true }}
                         style={{ width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', border: '4px solid var(--primary)' }}
                     >
-                        {/* Placeholder for Profile Image */}
-                        <img src="https://via.placeholder.com/200" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img
+                            src={about.imageUrl || "https://via.placeholder.com/200"}
+                            alt="Profile"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
                     </motion.div>
 
                     <motion.div
@@ -31,16 +49,20 @@ const About = () => {
                         viewport={{ once: true }}
                         style={{ maxWidth: '600px', textAlign: 'left' }}
                     >
-                        <p style={{ fontSize: '1.1rem', color: 'var(--text-main)' }}>
-                            I am a passionate Full Stack Developer with experience in building web applications using the MERN stack.
-                            I love creating beautiful, accessible, and performant user interfaces that delight users.
-                        </p>
-                        <p>
-                            My journey started with a curiosity for how things work on the internet, which led me to dive deep into JavaScript, React, and Node.js.
-                            When I'm not coding, you can find me exploring new technologies, contributing to open source, or gaming.
-                        </p>
+                        {about.bio ? (
+                            <p style={{ fontSize: '1.1rem', color: 'var(--text-main)', whiteSpace: 'pre-line' }}>
+                                {about.bio}
+                            </p>
+                        ) : (
+                            <p>Loading bio...</p>
+                        )}
+
                         <div style={{ marginTop: '1.5rem' }}>
-                            <a href="/resume.pdf" download className="btn btn-primary">Download Resume</a>
+                            {about.resumeUrl && (
+                                <a href={about.resumeUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                                    Download Resume
+                                </a>
+                            )}
                         </div>
                     </motion.div>
                 </div>
