@@ -1,60 +1,52 @@
-import React from "react";
-import Tilt from "react-parallax-tilt";
-import { motion } from "framer-motion";
-
-import { styles } from "../styles";
-import { services } from "../constants";
-import { SectionWrapper } from "../hoc";
-import { fadeIn, textVariant } from "../utils/motion";
-
-const ServiceCard = ({ index, title, icon }) => (
-    <Tilt className='xs:w-[250px] w-full'>
-        <motion.div
-            variants={fadeIn("right", "spring", index * 0.5, 0.75)}
-            className='w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card'
-        >
-            <div
-                className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col'
-            >
-                <img
-                    src={icon}
-                    alt='web-development'
-                    className='w-16 h-16 object-contain'
-                />
-
-                <h3 className='text-white text-[20px] font-bold text-center'>
-                    {title}
-                </h3>
-            </div>
-        </motion.div>
-    </Tilt>
-);
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const About = () => {
     return (
-        <>
-            <motion.div variants={textVariant()}>
-                <p className={styles.sectionSubText}>Introduction</p>
-                <h2 className={styles.sectionHeadText}>Overview.</h2>
-            </motion.div>
+        <section id="about" className="section">
+            <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <motion.h2
+                    initial={{ opacity: 0, y: -20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    style={{ marginBottom: '2rem' }}
+                >
+                    About Me
+                </motion.h2>
 
-            <motion.p
-                variants={fadeIn("", "", 0.1, 1)}
-                className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
-            >
-                I am a recent graduate with a strong foundation in Python programming and Full Stack Development.
-                I'm a dynamic and result-driven developer with experience in developing, testing, and maintaining
-                software applications. I am skilled in Python, Django, React, SQL, and MongoDB, and adept at
-                collaborating with cross-functional teams.
-            </motion.p>
+                <div className="flex-center" style={{ gap: '2rem', flexWrap: 'wrap' }}>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        style={{ width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', border: '4px solid var(--primary)' }}
+                    >
+                        {/* Placeholder for Profile Image */}
+                        <img src="https://via.placeholder.com/200" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </motion.div>
 
-            <div className='mt-20 flex flex-wrap gap-10'>
-                {services.map((service, index) => (
-                    <ServiceCard key={service.title} index={index} {...service} />
-                ))}
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        style={{ maxWidth: '600px', textAlign: 'left' }}
+                    >
+                        <p style={{ fontSize: '1.1rem', color: 'var(--text-main)' }}>
+                            I am a passionate Full Stack Developer with experience in building web applications using the MERN stack.
+                            I love creating beautiful, accessible, and performant user interfaces that delight users.
+                        </p>
+                        <p>
+                            My journey started with a curiosity for how things work on the internet, which led me to dive deep into JavaScript, React, and Node.js.
+                            When I'm not coding, you can find me exploring new technologies, contributing to open source, or gaming.
+                        </p>
+                        <div style={{ marginTop: '1.5rem' }}>
+                            <a href="/resume.pdf" download className="btn btn-primary">Download Resume</a>
+                        </div>
+                    </motion.div>
+                </div>
             </div>
-        </>
+        </section>
     );
 };
 
-export default SectionWrapper(About, "about");
+export default About;

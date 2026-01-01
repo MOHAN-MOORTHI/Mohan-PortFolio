@@ -1,49 +1,44 @@
-import { motion } from "framer-motion";
-
-import { styles } from "../styles";
-import { ComputersCanvas } from "./canvas";
+import React, { Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { motion } from 'framer-motion';
+import Stars from '../components/Stars';
 
 const Hero = () => {
     return (
-        <section className={`relative w-full h-screen mx-auto`}>
-            <div
-                className={`absolute inset-0 top-[120px]  max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5`}
-            >
-                <div className='flex flex-col justify-center items-center mt-5'>
-                    <div className='w-5 h-5 rounded-full bg-[#915EFF]' />
-                    <div className='w-1 sm:h-80 h-40 violet-gradient' />
-                </div>
-
-                <div>
-                    <h1 className={`${styles.heroHeadText} text-white`}>
-                        Hi, I'm <span className='text-[#915EFF]'>Mohan P</span>
-                    </h1>
-                    <p className={`${styles.heroSubText} mt-2 text-white-100`}>
-                        Python Full Stack Developer <br className='sm:block hidden' />
-                        Dynamic and result-driven coding enthusiast.
-                    </p>
-                </div>
+        <section style={{ height: '100vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
+                <Canvas camera={{ position: [0, 0, 1] }}>
+                    <Suspense fallback={null}>
+                        <Stars />
+                    </Suspense>
+                </Canvas>
             </div>
 
-            <ComputersCanvas />
-
-
-            <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center'>
-                <a href='#about'>
-                    <div className='w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2'>
-                        <motion.div
-                            animate={{
-                                y: [0, 24, 0],
-                            }}
-                            transition={{
-                                duration: 1.5,
-                                repeat: Infinity,
-                                repeatType: "loop",
-                            }}
-                            className='w-3 h-3 rounded-full bg-secondary mb-1'
-                        />
-                    </div>
-                </a>
+            <div className="content" style={{ textAlign: 'center', zIndex: 1, padding: '0 1rem' }}>
+                <motion.h1
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    style={{ marginBottom: '1rem', background: 'linear-gradient(to right, #6366f1, #a855f7, #22d3ee)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                >
+                    Hi, I'm a Full Stack Developer
+                </motion.h1>
+                <motion.p
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.8 }}
+                    style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 2rem' }}
+                >
+                    Building futuristic, scalable, and responsive web applications with the MERN stack.
+                </motion.p>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6, duration: 0.5 }}
+                >
+                    <a href="#projects" className="btn btn-primary" style={{ marginRight: '1rem' }}>View Projects</a>
+                    <a href="#contact" className="btn" style={{ border: '1px solid var(--primary)', color: 'white' }}>Contact Me</a>
+                </motion.div>
             </div>
         </section>
     );

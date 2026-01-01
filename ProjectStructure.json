@@ -1,0 +1,60 @@
+[
+    {
+        "name": "Frontend",
+        "children": [
+            {
+                "name": "src/components/Hero.jsx"
+            },
+            {
+                "name": "src/components/Navbar.jsx"
+            },
+            {
+                "name": "src/components/Projects.jsx"
+            },
+            {
+                "name": "src/components/Stars.jsx"
+            },
+            {
+                "name": "src/pages/Home.jsx"
+            },
+            {
+                "name": "src/pages/Login.jsx"
+            },
+            {
+                "name": "src/context/AuthContext.jsx"
+            },
+            {
+                "name": "src/App.jsx"
+            },
+            {
+                "name": "src/index.css"
+            },
+            {
+                "name": "vite.config.js"
+            }
+        ]
+    },
+    {
+        "name": "Backend",
+        "children": [
+            {
+                "name": "server/models/Project.js"
+            },
+            {
+                "name": "server/models/Skill.js"
+            },
+            {
+                "name": "server/models/User.js"
+            },
+            {
+                "name": "server/routes/api.js"
+            },
+            {
+                "name": "server/index.js"
+            },
+            {
+                "name": "server/.env"
+            }
+        ]
+    }
+]

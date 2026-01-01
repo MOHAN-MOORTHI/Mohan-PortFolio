@@ -1,93 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-
-import { styles } from "../styles";
-import { navLinks } from "../constants";
-import { Menu, X } from "lucide-react";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Navbar = () => {
-    const [active, setActive] = useState("");
-    const [toggle, setToggle] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollTop = window.scrollY;
-            if (scrollTop > 100) {
-                setScrolled(true);
-            } else {
-                setScrolled(false);
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    const toggle = () => setIsOpen(!isOpen);
 
     return (
-        <nav
-            className={`${styles.paddingX
-                } w-full flex items-center py-5 fixed top-0 z-20 ${scrolled ? "bg-primary" : "bg-transparent"
-                }`}
-        >
-            <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
-                <Link
-                    to='/'
-                    className='flex items-center gap-2'
-                    onClick={() => {
-                        setActive("");
-                        window.scrollTo(0, 0);
-                    }}
-                >
-                    {/* Logo placeholder - replaced with text for now */}
-                    <p className='text-white text-[18px] font-bold cursor-pointer flex '>
-                        Mohan &nbsp;
-                        <span className='sm:block hidden'> | Full Stack Developer</span>
-                    </p>
+        <nav className="glass fixed w-full z-50 top-0 left-0 px-8 py-4 flex justify-between items-center" style={{ width: '100%', position: 'fixed', zIndex: 50, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="logo"
+            >
+                <Link to="/" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-main)', textDecoration: 'none' }}>
+                    Portfolio.
                 </Link>
+            </motion.div>
 
-                {/* Desktop Menu */}
-                <ul className='list-none hidden sm:flex flex-row gap-10'>
-                    {navLinks.map((nav) => (
-                        <li
-                            key={nav.id}
-                            className={`${active === nav.title ? "text-white" : "text-secondary"
-                                } hover:text-white text-[18px] font-medium cursor-pointer`}
-                            onClick={() => setActive(nav.title)}
-                        >
-                            <a href={`#${nav.id}`}>{nav.title}</a>
-                        </li>
-                    ))}
-                </ul>
-
-                {/* Mobile Menu */}
-                <div className='sm:hidden flex flex-1 justify-end items-center'>
-                    <div onClick={() => setToggle(!toggle)} className="cursor-pointer">
-                        {toggle ? <X color="white" /> : <Menu color="white" />}
-                    </div>
-
-                    <div
-                        className={`${!toggle ? "hidden" : "flex"
-                            } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
+            <div className="desktop-menu" style={{ display: 'flex', gap: '2rem' }}>
+                {['About', 'Skills', 'Projects', 'Contact'].map((item) => (
+                    <Link
+                        key={item}
+                        to={`/#${item.toLowerCase()}`}
+                        style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}
                     >
-                        <ul className='list-none flex justify-end items-start flex-1 flex-col gap-4'>
-                            {navLinks.map((nav) => (
-                                <li
-                                    key={nav.id}
-                                    className={`font-poppins font-medium cursor-pointer text-[16px] ${active === nav.title ? "text-white" : "text-secondary"
-                                        }`}
-                                    onClick={() => {
-                                        setToggle(!toggle);
-                                        setActive(nav.title);
-                                    }}
-                                >
-                                    <a href={`#${nav.id}`}>{nav.title}</a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
+                        {item}
+                    </Link>
+                ))}
+                <Link to="/admin" className="btn btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}>Admin</Link>
+            </div>
+
+            {/* Mobile Icon */}
+            <div className="mobile-icon" onClick={toggle} style={{ display: 'none', cursor: 'pointer', color: 'white', fontSize: '1.5rem' }}>
+                {isOpen ? <FaTimes /> : <FaBars />}
             </div>
         </nav>
     );

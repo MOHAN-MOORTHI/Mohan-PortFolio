@@ -1,0 +1,103 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const ProjectManager = () => {
+    const [projects, setProjects] = useState([]);
+    const [form, setForm] = useState({ title: '', description: '', tags: '', liveUrl: '', githubUrl: '', imageUrl: '' });
+    const [editingId, setEditingId] = useState(null);
+
+    const fetchProjects = async () => {
+        try {
+            const res = await axios.get('/api/projects');
+            setProjects(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchProjects();
+    }, []);
+
+    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const projectData = { ...form, tags: form.tags.split(',').map(tag => tag.trim()) };
+
+        try {
+            if (editingId) {
+                await axios.put(`/api/projects/${editingId}`, projectData);
+            } else {
+                await axios.post('/api/projects', projectData);
+            }
+            setForm({ title: '', description: '', tags: '', liveUrl: '', githubUrl: '', imageUrl: '' });
+            setEditingId(null);
+            fetchProjects();
+        } catch (err) {
+            console.error(err);
+            alert('Error saving project');
+        }
+    };
+
+    const handleEdit = (project) => {
+        setForm({
+            ...project,
+            tags: project.tags.join(', ')
+        });
+        setEditingId(project._id);
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure?')) {
+            try {
+                await axios.delete(`/api/projects/${id}`);
+                fetchProjects();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    };
+
+    return (
+        <div>
+            <h3>Manage Projects</h3>
+            <form onSubmit={handleSubmit} className="glass-card" style={{ marginBottom: '2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <input name="title" value={form.title} onChange={handleChange} placeholder="Title" required style={inputStyle} />
+                    <input name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="Image URL" style={inputStyle} />
+                    <input name="liveUrl" value={form.liveUrl} onChange={handleChange} placeholder="Live URL" style={inputStyle} />
+                    <input name="githubUrl" value={form.githubUrl} onChange={handleChange} placeholder="GitHub URL" style={inputStyle} />
+                    <input name="tags" value={form.tags} onChange={handleChange} placeholder="Tags (comma separated)" style={inputStyle} />
+                </div>
+                <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" required rows="3" style={{ ...inputStyle, width: '100%', marginTop: '1rem' }} />
+                <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem' }}>{editingId ? 'Update' : 'Add'} Project</button>
+                {editingId && <button type="button" onClick={() => { setEditingId(null); setForm({ title: '', description: '', tags: '', liveUrl: '', githubUrl: '', imageUrl: '' }); }} className="btn" style={{ marginLeft: '1rem', border: '1px solid #666' }}>Cancel</button>}
+            </form>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
+                {projects.map(p => (
+                    <div key={p._id} className="glass" style={{ padding: '1rem', borderRadius: '8px' }}>
+                        <h4>{p.title}</h4>
+                        <p style={{ fontSize: '0.8rem' }}>{p.description.substring(0, 50)}...</p>
+                        <div style={{ marginTop: '1rem' }}>
+                            <button onClick={() => handleEdit(p)} className="btn" style={{ fontSize: '0.8rem', marginRight: '0.5rem', background: '#3b82f6', color: 'white' }}>Edit</button>
+                            <button onClick={() => handleDelete(p._id)} className="btn" style={{ fontSize: '0.8rem', background: '#ef4444', color: 'white' }}>Delete</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const inputStyle = {
+    padding: '0.8rem',
+    borderRadius: '4px',
+    border: '1px solid #444',
+    background: '#1e293b',
+    color: 'white',
+    width: '100%'
+};
+
+export default ProjectManager;

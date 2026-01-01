@@ -1,120 +1,68 @@
-import React, { useRef, useState } from "react";
-import { motion } from "framer-motion";
-
-import { styles } from "../styles";
-import { EarthCanvas } from "./canvas";
-import { SectionWrapper } from "../hoc";
-import { slideIn } from "../utils/motion";
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Contact = () => {
-    const formRef = useRef();
-    const [form, setForm] = useState({
-        name: "",
-        email: "",
-        message: "",
-    });
+    const [form, setForm] = useState({ name: '', email: '', message: '' });
+    const [status, setStatus] = useState('');
 
-    const [loading, setLoading] = useState(false);
+    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-    const handleChange = (e) => {
-        const { target } = e;
-        const { name, value } = target;
-
-        setForm({
-            ...form,
-            [name]: value,
-        });
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
-
-        // Placeholder for email sending
-        setTimeout(() => {
-            setLoading(false);
-            alert("Thank you. I will get back to you as soon as possible.");
-            setForm({
-                name: "",
-                email: "",
-                message: "",
-            });
-        }, 1000)
-
+        setStatus('Sending...');
+        try {
+            await axios.post('/api/contact', form);
+            setStatus('Message Sent! I will get back to you soon.');
+            setForm({ name: '', email: '', message: '' });
+        } catch (err) {
+            setStatus('Failed to send message.');
+        }
     };
 
     return (
-        <div
-            className={`xl:mt-12 flex xl:flex-row flex-col-reverse gap-10 overflow-hidden`}
-        >
-            <motion.div
-                variants={slideIn("left", "tween", 0.2, 1)}
-                className='flex-[0.75] bg-black-100 p-8 rounded-2xl'
-            >
-                <p className={styles.sectionSubText}>Get in touch</p>
-                <h3 className={styles.sectionHeadText}>Contact.</h3>
-
-                <div className="mt-4 mb-8 text-white">
-                    <p>Email: mohangopippt@gmail.com</p>
-                    <p>Phone: 6381799190</p>
-                </div>
-
-                <form
-                    ref={formRef}
-                    onSubmit={handleSubmit}
-                    className='mt-12 flex flex-col gap-8'
-                >
-                    <label className='flex flex-col'>
-                        <span className='text-white font-medium mb-4'>Your Name</span>
+        <section id="contact" className="section">
+            <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Contact Me</h2>
+            <div className="glass-card" style={{ maxWidth: '600px', margin: '0 auto' }}>
+                <form onSubmit={handleSubmit}>
+                    <div style={{ marginBottom: '1rem' }}>
+                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Name</label>
                         <input
-                            type='text'
-                            name='name'
+                            type="text"
+                            name="name"
                             value={form.name}
                             onChange={handleChange}
-                            placeholder="What's your good name?"
-                            className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
+                            required
+                            style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid #444', background: '#0f172a', color: 'white' }}
                         />
-                    </label>
-                    <label className='flex flex-col'>
-                        <span className='text-white font-medium mb-4'>Your Email</span>
+                    </div>
+                    <div style={{ marginBottom: '1rem' }}>
+                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Email</label>
                         <input
-                            type='email'
-                            name='email'
+                            type="email"
+                            name="email"
                             value={form.email}
                             onChange={handleChange}
-                            placeholder="What's your web address?"
-                            className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
+                            required
+                            style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid #444', background: '#0f172a', color: 'white' }}
                         />
-                    </label>
-                    <label className='flex flex-col'>
-                        <span className='text-white font-medium mb-4'>Your Message</span>
+                    </div>
+                    <div style={{ marginBottom: '1rem' }}>
+                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Message</label>
                         <textarea
-                            rows={7}
-                            name='message'
+                            name="message"
                             value={form.message}
                             onChange={handleChange}
-                            placeholder='What you want to say?'
-                            className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
-                        />
-                    </label>
-
-                    <button
-                        type='submit'
-                        className='bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary'
-                    >
-                        {loading ? "Sending..." : "Send"}
-                    </button>
+                            required
+                            rows="5"
+                            style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid #444', background: '#0f172a', color: 'white' }}
+                        ></textarea>
+                    </div>
+                    <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Send Message</button>
+                    {status && <p style={{ marginTop: '1rem', textAlign: 'center', color: status.includes('Sent') ? 'green' : 'red' }}>{status}</p>}
                 </form>
-            </motion.div>
-
-            <motion.div
-                variants={slideIn("right", "tween", 0.2, 1)}
-                className='xl:flex-1 xl:h-auto md:h-[550px] h-[350px]'
-            >
-                <EarthCanvas />
-            </motion.div>
-        </div>
+            </div>
+        </section>
     );
 };
 
-export default SectionWrapper(Contact, "contact");
+export default Contact;

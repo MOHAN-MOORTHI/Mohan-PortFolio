@@ -1,67 +1,76 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 
-import { styles } from "../styles";
-import { experiences } from "../constants";
-import { SectionWrapper } from "../hoc";
-import { textVariant } from "../utils/motion";
-
-const ExperienceCard = ({ experience }) => {
-    return (
-        <div className='flex flex-col bg-[#1d1836] p-6 rounded-2xl w-full sm:w-[360px]'>
-            <div className="flex items-center gap-4 border-b border-gray-700 pb-4 mb-4">
-                <div className='flex justify-center items-center w-12 h-12 rounded-full bg-white'>
-                    <img
-                        src={experience.icon}
-                        alt={experience.company_name}
-                        className='w-[60%] h-[60%] object-contain'
-                    />
-                </div>
-                <div>
-                    <h3 className='text-white text-[20px] font-bold'>{experience.title}</h3>
-                    <p className='text-secondary text-[16px] font-semibold' style={{ margin: 0 }}>
-                        {experience.company_name}
-                    </p>
-                    <p className='text-secondary text-[14px]'>{experience.date}</p>
-                </div>
-            </div>
-
-            <ul className='mt-5 list-disc ml-5 space-y-2'>
-                {experience.points.map((point, index) => (
-                    <li
-                        key={`experience-point-${index}`}
-                        className='text-white-100 text-[14px] pl-1 tracking-wider'
-                    >
-                        {point}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-};
+const experiences = [
+    {
+        id: 1,
+        role: "Senior Full Stack Dev",
+        company: "Tech Corp",
+        date: "2023 - Present",
+        desc: "Leading web development projects using MERN stack."
+    },
+    {
+        id: 2,
+        role: "Frontend Developer",
+        company: "Creative Agency",
+        date: "2021 - 2023",
+        desc: "Built responsive UIs with React and GSAP."
+    },
+    {
+        id: 3,
+        role: "Intern",
+        company: "Startup Inc",
+        date: "2020 - 2021",
+        desc: "Assisted in backend API development."
+    }
+];
 
 const Experience = () => {
     return (
-        <>
-            <motion.div variants={textVariant()}>
-                <p className={`${styles.sectionSubText} text-center`}>
-                    What I have done so far
-                </p>
-                <h2 className={`${styles.sectionHeadText} text-center`}>
-                    Education & Certifications.
-                </h2>
-            </motion.div>
+        <section id="experience" className="section">
+            <h2 style={{ textAlign: 'center', marginBottom: '3rem' }}>Experience</h2>
+            <div style={{ position: 'relative', maxWidth: '800px', margin: '0 auto' }}>
+                {/* Vertical Line */}
+                <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: '2px', background: 'var(--glass-border)', transform: 'translateX(-50%)' }} />
 
-            <div className='mt-20 flex flex-wrap justify-center gap-10'>
-                {experiences.map((experience, index) => (
-                    <ExperienceCard
-                        key={`experience-${index}`}
-                        experience={experience}
-                    />
+                {experiences.map((exp, index) => (
+                    <motion.div
+                        key={exp.id}
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.2 }}
+                        style={{
+                            display: 'flex',
+                            justifyContent: index % 2 === 0 ? 'flex-start' : 'flex-end',
+                            marginBottom: '2rem',
+                            position: 'relative'
+                        }}
+                    >
+                        {/* Dot on line */}
+                        <div style={{
+                            position: 'absolute',
+                            left: '50%',
+                            top: '20px',
+                            width: '16px',
+                            height: '16px',
+                            background: 'var(--accent)',
+                            borderRadius: '50%',
+                            transform: 'translateX(-50%)',
+                            zIndex: 2,
+                            boxShadow: '0 0 10px var(--accent)'
+                        }} />
+
+                        <div className="glass-card" style={{ width: '45%', position: 'relative' }}>
+                            <h3 style={{ fontSize: '1.2rem', color: 'var(--primary)' }}>{exp.role}</h3>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>{exp.company}</h4>
+                            <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>{exp.date}</p>
+                            <p>{exp.desc}</p>
+                        </div>
+                    </motion.div>
                 ))}
             </div>
-        </>
+        </section>
     );
 };
 
-export default SectionWrapper(Experience, "work");
+export default Experience;

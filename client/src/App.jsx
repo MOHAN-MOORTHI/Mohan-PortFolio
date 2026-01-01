@@ -1,26 +1,30 @@
-import { BrowserRouter } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 
-import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works } from "./components";
+const AdminRoute = ({ children }) => {
+    const { token, loading } = useAuth();
+    if (loading) return <div>Loading...</div>;
+    return token ? children : <Navigate to="/admin" />;
+};
 
-const App = () => {
-  return (
-    <BrowserRouter>
-      <div className='relative z-0 bg-primary'>
-        <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center'>
-          <Navbar />
-          <Hero />
-        </div>
-        <About />
-        <Experience />
-        <Tech />
-        <Works />
-        <Feedbacks />
-        <div className='relative z-0'>
-          <Contact />
-        </div>
-      </div>
-    </BrowserRouter>
-  );
+function App() {
+    return (
+        <AuthProvider>
+            <Router>
+                <div className="App">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/admin" element={<Login />} />
+                        <Route path="/admin/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
+                    </Routes>
+                </div>
+            </Router>
+        </AuthProvider>
+    );
 }
 
 export default App;
