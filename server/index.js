@@ -25,6 +25,12 @@ app.get('/', (req, res) => {
   res.send('Portfolio API is running');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Export app for Vercel
+module.exports = app;
+
+// Only listen if not imported (running locally)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}

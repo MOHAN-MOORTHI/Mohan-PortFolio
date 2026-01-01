@@ -4,18 +4,26 @@ import { motion } from 'framer-motion';
 
 const Projects = () => {
     const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchProjects = async () => {
             try {
                 const res = await axios.get('/api/projects');
                 setProjects(res.data);
+                setLoading(false);
             } catch (err) {
                 console.error("Failed to fetch projects", err);
+                setError('Failed to load projects. Ensure backend is running.');
+                setLoading(false);
             }
         };
         fetchProjects();
     }, []);
+
+    if (loading) return <div className="text-center p-10">Loading Projects...</div>;
+    if (error) return <div className="text-center p-10 text-red-500">{error}</div>;
 
     return (
         <section id="projects" className="section">
@@ -29,7 +37,7 @@ const Projects = () => {
             </motion.h2>
 
             <div className="grid-cols-3">
-                {projects.map((project, index) => (
+                {projects.length === 0 ? <p className="text-center col-span-3">No projects found.</p> : projects.map((project, index) => (
                     <motion.div
                         key={project._id}
                         className="glass-card"

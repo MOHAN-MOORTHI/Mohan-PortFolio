@@ -4,18 +4,23 @@ import { motion } from 'framer-motion';
 
 const Skills = () => {
     const [skills, setSkills] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchSkills = async () => {
             try {
                 const res = await axios.get('/api/skills');
                 setSkills(res.data);
+                setLoading(false);
             } catch (err) {
                 console.error("Failed to fetch skills", err);
+                setLoading(false);
             }
         };
         fetchSkills();
     }, []);
+
+    if (loading) return null; // Or a spinner, but null is cleaner for skills section initial load
 
     return (
         <section id="skills" className="section">
