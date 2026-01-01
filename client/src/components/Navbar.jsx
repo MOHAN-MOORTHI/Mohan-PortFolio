@@ -1,43 +1,106 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const location = useLocation();
 
-    const toggle = () => setIsOpen(!isOpen);
+    // Handle scroll effect for navbar background
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 50);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const scrollToSection = (id) => {
+        setIsOpen(false);
+        if (location.pathname !== '/') {
+            // Navigate to home then scroll (logic would be needed in Home to check hash, but for now assuming SPA mostly)
+            window.location.href = `/#${id}`;
+        } else {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    };
 
     return (
-        <nav className="glass fixed w-full z-50 top-0 left-0 px-8 py-4 flex justify-between items-center" style={{ width: '100%', position: 'fixed', zIndex: 50, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="logo"
-            >
-                <Link to="/" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-main)', textDecoration: 'none' }}>
+        <>
+            <style>
+                {`
+          .nav-container {
+            transition: all 0.3s ease;
+            background: ${scrolled ? 'rgba(15, 23, 42, 0.9)' : 'rgba(15, 23, 42, 0.3)'};
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid ${scrolled ? 'rgba(255,255,255,0.1)' : 'transparent'};
+          }
+          .desktop-menu { display: flex; gap: 2rem; }
+          .mobile-icon { display: none; cursor: pointer; font-size: 1.5rem; color: white; }
+          
+          @media (max-width: 768px) {
+            .desktop-menu { display: none; }
+            .mobile-icon { display: block; }
+          }
+        `}
+            </style>
+            <nav className="nav-container" style={{ position: 'fixed', width: '100%', top: 0, zIndex: 1000, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Link to="/" onClick={() => window.scrollTo(0, 0)} style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white', textDecoration: 'none' }}>
                     Portfolio.
                 </Link>
-            </motion.div>
 
-            <div className="desktop-menu" style={{ display: 'flex', gap: '2rem' }}>
-                {['About', 'Skills', 'Projects', 'Contact'].map((item) => (
-                    <Link
-                        key={item}
-                        to={`/#${item.toLowerCase()}`}
-                        style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}
+                {/* Desktop Menu */}
+                <div className="desktop-menu">
+                    {['About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
+                        <button
+                            key={item}
+                            onClick={() => scrollToSection(item.toLowerCase())}
+                            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.8)', cursor: 'pointer', fontSize: '1rem', fontWeight: 500, transition: 'color 0.3s' }}
+                            onMouseOver={(e) => e.target.style.color = '#fff'}
+                            onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.8)'}
+                        >
+                            {item}
+                        </button>
+                    ))}
+                    <Link to="/admin" className="btn btn-primary" style={{ padding: '0.5rem 1rem', textDecoration: 'none' }}>Admin</Link>
+                </div>
+
+                {/* Mobile Icon */}
+                <div className="mobile-icon" onClick={() => setIsOpen(!isOpen)}>
+                    {isOpen ? <FaTimes /> : <FaBars />}
+                </div>
+            </nav>
+
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        style={{
+                            position: 'fixed', top: '70px', left: 0, width: '100%', background: 'rgba(15, 23, 42, 0.95)',
+                            backdropFilter: 'blur(15px)', padding: '2rem', display: 'flex', flexDirection: 'column',
+                            alignItems: 'center', gap: '2rem', zIndex: 999, borderBottom: '1px solid rgba(255,255,255,0.1)'
+                        }}
                     >
-                        {item}
-                    </Link>
-                ))}
-                <Link to="/admin" className="btn btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}>Admin</Link>
-            </div>
-
-            {/* Mobile Icon */}
-            <div className="mobile-icon" onClick={toggle} style={{ display: 'none', cursor: 'pointer', color: 'white', fontSize: '1.5rem' }}>
-                {isOpen ? <FaTimes /> : <FaBars />}
-            </div>
-        </nav>
+                        {['About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
+                            <button
+                                key={item}
+                                onClick={() => scrollToSection(item.toLowerCase())}
+                                style={{ background: 'none', border: 'none', color: 'white', fontSize: '1.2rem', cursor: 'pointer' }}
+                            >
+                                {item}
+                            </button>
+                        ))}
+                        <Link to="/admin" onClick={() => setIsOpen(false)} className="btn btn-primary">Admin Login</Link>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
     );
 };
 
