@@ -21,7 +21,8 @@ const Hero = () => {
                     transition={{ duration: 0.8 }}
                     style={{ marginBottom: '1rem', background: 'linear-gradient(to right, #6366f1, #a855f7, #22d3ee)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
                 >
-                    Hi, I'm a Full Stack Developer
+                    Hi, I'm Mohan <br />
+                    <span style={{ fontSize: '2.5rem', color: 'white', WebkitTextFillColor: 'white' }}>Full Stack Developer</span>
                 </motion.h1>
                 <motion.p
                     initial={{ opacity: 0, y: 50 }}
