@@ -161,6 +161,7 @@ router.delete('/contact/:id', auth, async (req, res) => {
 
 // --- ABOUT ROUTE ---
 const About = require('../models/About');
+const Experience = require('../models/Experience');
 
 router.get('/about', async (req, res) => {
     try {
@@ -185,6 +186,35 @@ router.post('/about', auth, async (req, res) => {
             await about.save();
         }
         res.json(about);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// --- EXPERIENCE ROUTES ---
+router.get('/experience', async (req, res) => {
+    try {
+        const experiences = await Experience.find().sort({ createdAt: -1 });
+        res.json(experiences);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.post('/experience', auth, async (req, res) => {
+    try {
+        const newExp = new Experience(req.body);
+        const savedExp = await newExp.save();
+        res.json(savedExp);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.delete('/experience/:id', auth, async (req, res) => {
+    try {
+        await Experience.findByIdAndDelete(req.params.id);
+        res.json({ msg: 'Experience deleted' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

@@ -1,31 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-
-const experiences = [
-    {
-        id: 1,
-        role: "Senior Full Stack Dev",
-        company: "Tech Corp",
-        date: "2023 - Present",
-        desc: "Leading web development projects using MERN stack."
-    },
-    {
-        id: 2,
-        role: "Frontend Developer",
-        company: "Creative Agency",
-        date: "2021 - 2023",
-        desc: "Built responsive UIs with React and GSAP."
-    },
-    {
-        id: 3,
-        role: "Intern",
-        company: "Startup Inc",
-        date: "2020 - 2021",
-        desc: "Assisted in backend API development."
-    }
-];
+import axios from 'axios';
 
 const Experience = () => {
+    const [experiences, setExperiences] = useState([]);
+
+    useEffect(() => {
+        const fetchExperience = async () => {
+            try {
+                const res = await axios.get('/api/experience');
+                setExperiences(res.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchExperience();
+    }, []);
+
     return (
         <section id="experience" className="section">
             <h2 style={{ textAlign: 'center', marginBottom: '3rem' }}>Experience</h2>
@@ -35,7 +26,7 @@ const Experience = () => {
 
                 {experiences.map((exp, index) => (
                     <motion.div
-                        key={exp.id}
+                        key={exp._id}
                         initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.2 }}
@@ -63,8 +54,8 @@ const Experience = () => {
                         <div className="glass-card" style={{ width: '45%', position: 'relative' }}>
                             <h3 style={{ fontSize: '1.2rem', color: 'var(--primary)' }}>{exp.role}</h3>
                             <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>{exp.company}</h4>
-                            <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>{exp.date}</p>
-                            <p>{exp.desc}</p>
+                            <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>{exp.duration}</p>
+                            <p>{exp.description}</p>
                         </div>
                     </motion.div>
                 ))}
@@ -74,3 +65,4 @@ const Experience = () => {
 };
 
 export default Experience;
+

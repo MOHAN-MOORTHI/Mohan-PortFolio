@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ProjectManager from '../components/admin/ProjectManager';
 import SkillManager from '../components/admin/SkillManager';
 import AboutManager from '../components/admin/AboutManager';
+import ExperienceManager from '../components/admin/ExperienceManager';
 
 import MessageManager from '../components/admin/MessageManager';
 
@@ -51,6 +52,14 @@ const Dashboard = () => {
                                 About Me
                             </button>
                         </li>
+                        <li style={{ marginBottom: '1rem' }}>
+                            <button
+                                onClick={() => setActiveTab('experience')}
+                                style={{ ...tabBtnStyle, color: activeTab === 'experience' ? 'var(--primary)' : 'white' }}
+                            >
+                                Experience
+                            </button>
+                        </li>
                         <li>
                             <button
                                 onClick={() => setActiveTab('messages')}
@@ -65,6 +74,7 @@ const Dashboard = () => {
                 <main>
                     {activeTab === 'projects' && <ProjectManager />}
                     {activeTab === 'skills' && <SkillManager />}
+                    {activeTab === 'experience' && <ExperienceManager />}
                     {activeTab === 'about' && <AboutManager />}
                     {activeTab === 'messages' && <MessageManager />}
                 </main>
