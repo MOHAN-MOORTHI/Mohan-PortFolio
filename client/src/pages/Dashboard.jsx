@@ -5,6 +5,7 @@ import ProjectManager from '../components/admin/ProjectManager';
 import SkillManager from '../components/admin/SkillManager';
 import AboutManager from '../components/admin/AboutManager';
 import ExperienceManager from '../components/admin/ExperienceManager';
+import CertificationManager from '../components/admin/CertificationManager';
 
 import MessageManager from '../components/admin/MessageManager';
 
@@ -60,6 +61,14 @@ const Dashboard = () => {
                                 Experience
                             </button>
                         </li>
+                        <li style={{ marginBottom: '1rem' }}>
+                            <button
+                                onClick={() => setActiveTab('certifications')}
+                                style={{ ...tabBtnStyle, color: activeTab === 'certifications' ? 'var(--primary)' : 'white' }}
+                            >
+                                Certifications
+                            </button>
+                        </li>
                         <li>
                             <button
                                 onClick={() => setActiveTab('messages')}
@@ -75,6 +84,7 @@ const Dashboard = () => {
                     {activeTab === 'projects' && <ProjectManager />}
                     {activeTab === 'skills' && <SkillManager />}
                     {activeTab === 'experience' && <ExperienceManager />}
+                    {activeTab === 'certifications' && <CertificationManager />}
                     {activeTab === 'about' && <AboutManager />}
                     {activeTab === 'messages' && <MessageManager />}
                 </main>

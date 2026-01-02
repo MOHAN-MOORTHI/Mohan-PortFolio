@@ -9,6 +9,8 @@ import Contact from '../components/Contact';
 
 import Footer from '../components/Footer';
 
+import Certifications from '../components/Certifications';
+
 const Home = () => {
     return (
         <>
@@ -17,6 +19,7 @@ const Home = () => {
             <About />
             <Skills />
             <Experience />
+            <Certifications />
             <Projects />
             <Contact />
             <Footer />

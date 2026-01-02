@@ -220,4 +220,66 @@ router.delete('/experience/:id', auth, async (req, res) => {
     }
 });
 
+// --- CERTIFICATION ROUTES ---
+const Certification = require('../models/Certification');
+
+router.get('/certifications', async (req, res) => {
+    try {
+        const certs = await Certification.find().sort({ createdAt: -1 });
+        res.json(certs);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.post('/certifications', auth, async (req, res) => {
+    try {
+        const newCert = new Certification(req.body);
+        const savedCert = await newCert.save();
+        res.json(savedCert);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.delete('/certifications/:id', auth, async (req, res) => {
+    try {
+        await Certification.findByIdAndDelete(req.params.id);
+        res.json({ msg: 'Certification deleted' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// --- CERTIFICATION ROUTES ---
+const Certification = require('../models/Certification');
+
+router.get('/certifications', async (req, res) => {
+    try {
+        const certs = await Certification.find().sort({ createdAt: -1 });
+        res.json(certs);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.post('/certifications', auth, async (req, res) => {
+    try {
+        const newCert = new Certification(req.body);
+        const savedCert = await newCert.save();
+        res.json(savedCert);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.delete('/certifications/:id', auth, async (req, res) => {
+    try {
+        await Certification.findByIdAndDelete(req.params.id);
+        res.json({ msg: 'Certification deleted' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;
