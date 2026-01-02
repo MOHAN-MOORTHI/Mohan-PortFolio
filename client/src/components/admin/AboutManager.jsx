@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AboutManager = () => {
-    const [form, setForm] = useState({ bio: '', imageUrl: '', resumeUrl: '' });
+    const [form, setForm] = useState({ bio: '', imageUrl: '', resumeUrl: '', github: '', linkedin: '', twitter: '', whatsapp: '', email: '' });
     const [status, setStatus] = useState('');
 
     useEffect(() => {
@@ -12,7 +12,12 @@ const AboutManager = () => {
                 if (res.data) setForm({
                     bio: res.data.bio || '',
                     imageUrl: res.data.imageUrl || '',
-                    resumeUrl: res.data.resumeUrl || ''
+                    resumeUrl: res.data.resumeUrl || '',
+                    github: res.data.github || '',
+                    linkedin: res.data.linkedin || '',
+                    twitter: res.data.twitter || '',
+                    whatsapp: res.data.whatsapp || '',
+                    email: res.data.email || ''
                 });
             } catch (err) {
                 console.error(err);
@@ -83,22 +88,42 @@ const AboutManager = () => {
                     />
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Resume (PDF)</label>
-                    <input type="file" onChange={(e) => uploadFile(e, 'resumeUrl')} style={{ marginBottom: '0.5rem', color: 'white' }} />
-                    <input
-                        type="text"
-                        name="resumeUrl"
-                        value={form.resumeUrl}
-                        onChange={handleChange}
-                        placeholder="Or Resume URL"
-                        style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid #444', background: '#0f172a', color: 'white' }}
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">Save Changes</button>
-                {status && <p style={{ marginTop: '1rem', color: status.includes('Failed') ? 'red' : 'green' }}>{status}</p>}
+                    <div style={{ marginBottom: '1rem' }}>
+                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Resume (PDF)</label>
+                        <input type="file" onChange={(e) => uploadFile(e, 'resumeUrl')} style={{ marginBottom: '0.5rem', color: 'white' }} />
+                        <input
+                            type="text"
+                            name="resumeUrl"
+                            value={form.resumeUrl}
+                            onChange={handleChange}
+                            placeholder="Or Resume URL"
+                            style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid #444', background: '#0f172a', color: 'white' }}
+                        />
+                    </div>
+
+                    <h4 style={{ marginBottom: '1rem', borderBottom: '1px solid #444', paddingBottom: '0.5rem' }}>Social Links</h4>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <input name="github" value={form.github} onChange={handleChange} placeholder="GitHub URL" style={inputStyle} />
+                        <input name="linkedin" value={form.linkedin} onChange={handleChange} placeholder="LinkedIn URL" style={inputStyle} />
+                        <input name="twitter" value={form.twitter} onChange={handleChange} placeholder="Twitter (X) URL" style={inputStyle} />
+                        <input name="whatsapp" value={form.whatsapp} onChange={handleChange} placeholder="WhatsApp URL" style={inputStyle} />
+                        <input name="email" value={form.email} onChange={handleChange} placeholder="Email Address (mailto: will be added automatically)" style={inputStyle} />
+                    </div>
+                    <div style={{ marginBottom: '1rem' }}></div>
+                    <button type="submit" className="btn btn-primary">Save Changes</button>
+                    {status && <p style={{ marginTop: '1rem', color: status.includes('Failed') ? 'red' : 'green' }}>{status}</p>}
             </form>
         </div>
     );
+};
+
+const inputStyle = {
+    width: '100%',
+    padding: '0.8rem',
+    borderRadius: '4px',
+    border: '1px solid #444',
+    background: '#0f172a',
+    color: 'white'
 };
 
 export default AboutManager;

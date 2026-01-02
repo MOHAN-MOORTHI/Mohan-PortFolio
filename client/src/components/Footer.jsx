@@ -1,13 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { FaGithub, FaLinkedin, FaTwitter, FaWhatsapp, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
+    const [socials, setSocials] = useState({ github: '', linkedin: '', twitter: '', whatsapp: '', email: '' });
+
+    useEffect(() => {
+        const fetchSocials = async () => {
+            try {
+                const res = await axios.get('/api/about');
+                if (res.data) setSocials({
+                    github: res.data.github || '',
+                    linkedin: res.data.linkedin || '',
+                    twitter: res.data.twitter || '',
+                    whatsapp: res.data.whatsapp || '',
+                    email: res.data.email || ''
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchSocials();
+    }, []);
+
     const socialLinks = [
-        { icon: <FaGithub />, url: 'https://github.com/MOHAN-MOORTHI' },
-        { icon: <FaLinkedin />, url: 'https://linkedin.com/in/mohan-moorthi' }, // Guessing or placeholder
-        { icon: <FaTwitter />, url: 'https://twitter.com' },
-        { icon: <FaWhatsapp />, url: 'https://wa.me/919876543210' }, // Placeholder
-        { icon: <FaEnvelope />, url: 'mailto:contact@example.com' }
+        { icon: <FaGithub />, url: socials.github, show: !!socials.github },
+        { icon: <FaLinkedin />, url: socials.linkedin, show: !!socials.linkedin },
+        { icon: <FaTwitter />, url: socials.twitter, show: !!socials.twitter },
+        { icon: <FaWhatsapp />, url: socials.whatsapp, show: !!socials.whatsapp },
+        { icon: <FaEnvelope />, url: socials.email ? `mailto:${socials.email}` : '', show: !!socials.email }
     ];
 
     return (
@@ -19,7 +40,7 @@ const Footer = () => {
             marginTop: 'auto'
         }}>
             <div className="flex-center" style={{ gap: '2rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
-                {socialLinks.map((link, index) => (
+                {socialLinks.filter(link => link.show).map((link, index) => (
                     <a
                         key={index}
                         href={link.url}

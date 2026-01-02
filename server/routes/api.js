@@ -180,6 +180,11 @@ router.post('/about', auth, async (req, res) => {
             about.bio = req.body.bio;
             about.imageUrl = req.body.imageUrl;
             about.resumeUrl = req.body.resumeUrl;
+            about.github = req.body.github;
+            about.linkedin = req.body.linkedin;
+            about.twitter = req.body.twitter;
+            about.whatsapp = req.body.whatsapp;
+            about.email = req.body.email;
             await about.save();
         } else {
             about = new About(req.body);
