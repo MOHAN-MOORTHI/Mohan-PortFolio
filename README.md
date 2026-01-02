@@ -116,31 +116,27 @@ The frontend runs on Port `5173` or `5174`.
 
 ## ☁️ Deployment Guide (Vercel)
 
-This project is a **Monorepo** (Client + Server in one repo). To deploy it correctly on Vercel, you must deploy the Frontend and Backend as **separate projects**.
+This project is configured as a **Monorepo** with a streamlined `vercel.json` configuration, allowing you to deploy both Frontend and Backend as a single Vercel project!
 
-### Step 1: Deploy Backend (API)
-1.  Push your code to GitHub.
+### Quick Deployment
+1.  Push your code to **GitHub**.
 2.  Go to **Vercel Dashboard** -> **Add New Project**.
 3.  Import the `Mohan-PortFolio` repository.
-4.  **Project Name**: e.g., `mohan-portfolio-api`.
-5.  **Root Directory**: Click "Edit" and select `server`.
-6.  **Environment Variables**:
+4.  **Configuration**:
+    - **Framework Preset**: Vite (Auto-detected).
+    - **Root Directory**: Leave as `./` (Root).
+    - **Build Command**: Leave default or `npm run install-all`.
+5.  **Environment Variables**:
     - `MONGODB_URI`: Your MongoDB Atlas Connection String.
-    - `JWT_SECRET`: Your Secret Key.
-7.  Click **Deploy**.
-8.  **Copy the Domain** assigned by Vercel (e.g., `https://mohan-portfolio-api.vercel.app`).
+    - `JWT_SECRET`: Your customized Secret Key.
+    - `NODE_ENV`: `production`.
+6.  Click **Deploy**.
 
-### Step 2: Deploy Frontend (Client)
-1.  Go to **Vercel Dashboard** -> **Add New Project**.
-2.  Import the `Mohan-PortFolio` repository **again**.
-3.  **Project Name**: e.g., `mohan-portfolio-client`.
-4.  **Framework Preset**: Select `Vite`.
-5.  **Root Directory**: Click "Edit" and select `client`.
-6.  **Environment Variables**:
-    - `VITE_API_URL`: Paste the Backend URL from Step 1 (e.g., `https://mohan-portfolio-api.vercel.app`).
-7.  Click **Deploy**.
+Vercel will automatically handle:
+- Hosting the React frontend.
+- Hosting the Express backend as Serverless Functions via the `/api` rewrite rules defined in `vercel.json`.
 
-**Success!** Your portfolio is now live, and the frontend connects to your deployed backend.
+**Success!** Your portfolio is live with a single URL!
 
 ---
 
