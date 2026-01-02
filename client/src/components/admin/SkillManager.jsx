@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { FaTrash } from 'react-icons/fa';
 
 const SkillManager = () => {
     const [skills, setSkills] = useState([]);
@@ -74,7 +75,9 @@ const SkillManager = () => {
                 {skills.map(s => (
                     <div key={s._id} style={{ background: '#334155', padding: '0.5rem 1rem', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span>{s.name} ({s.level}%)</span>
-                        <button onClick={() => handleDelete(s._id)} style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer' }}>x</button>
+                        <button onClick={() => handleDelete(s._id)} style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                            <FaTrash />
+                        </button>
                     </div>
                 ))}
             </div>

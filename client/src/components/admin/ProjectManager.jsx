@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+import { FaCloudUploadAlt, FaEdit, FaTrash } from 'react-icons/fa';
 
 const ProjectManager = () => {
     const [projects, setProjects] = useState([]);
@@ -130,9 +130,13 @@ const ProjectManager = () => {
                     <div key={p._id} className="glass" style={{ padding: '1rem', borderRadius: '8px' }}>
                         <h4>{p.title}</h4>
                         <p style={{ fontSize: '0.8rem' }}>{p.description.substring(0, 50)}...</p>
-                        <div style={{ marginTop: '1rem' }}>
-                            <button onClick={() => handleEdit(p)} className="btn" style={{ fontSize: '0.8rem', marginRight: '0.5rem', background: '#3b82f6', color: 'white' }}>Edit</button>
-                            <button onClick={() => handleDelete(p._id)} className="btn" style={{ fontSize: '0.8rem', background: '#ef4444', color: 'white' }}>Delete</button>
+                        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+                            <button onClick={() => handleEdit(p)} className="btn" style={{ fontSize: '1rem', background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', border: 'none' }}>
+                                <FaEdit />
+                            </button>
+                            <button onClick={() => handleDelete(p._id)} className="btn" style={{ fontSize: '1rem', background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', border: 'none' }}>
+                                <FaTrash />
+                            </button>
                         </div>
                     </div>
                 ))}
