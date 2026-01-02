@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const AboutManager = () => {
     const [form, setForm] = useState({ bio: '', imageUrl: '', resumeUrl: '', github: '', linkedin: '', twitter: '', whatsapp: '', facebook: '', mobile: '', email: '' });
@@ -78,9 +79,17 @@ const AboutManager = () => {
                         style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid #444', background: '#0f172a', color: 'white' }}
                     />
                 </div>
+
+                {/* Profile Image Upload */}
                 <div style={{ marginBottom: '1rem' }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem' }}>Profile Image</label>
-                    <input type="file" onChange={(e) => uploadFile(e, 'imageUrl')} style={{ marginBottom: '0.5rem', color: 'white' }} />
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <label className="btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '0.5rem 1rem', borderRadius: '4px', color: 'white' }}>
+                            <FaCloudUploadAlt /> Upload Image
+                            <input type="file" onChange={(e) => uploadFile(e, 'imageUrl')} style={{ display: 'none' }} />
+                        </label>
+                        <span style={{ fontSize: '0.8rem', color: 'gray' }}>{form.imageUrl ? 'Image Selected' : 'No file chosen'}</span>
+                    </div>
                     <input
                         type="text"
                         name="imageUrl"
@@ -91,9 +100,16 @@ const AboutManager = () => {
                     />
                 </div>
 
+                {/* Resume Upload */}
                 <div style={{ marginBottom: '1rem' }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem' }}>Resume (PDF)</label>
-                    <input type="file" onChange={(e) => uploadFile(e, 'resumeUrl')} style={{ marginBottom: '0.5rem', color: 'white' }} />
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <label className="btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '0.5rem 1rem', borderRadius: '4px', color: 'white' }}>
+                            <FaCloudUploadAlt /> Upload Resume
+                            <input type="file" onChange={(e) => uploadFile(e, 'resumeUrl')} style={{ display: 'none' }} />
+                        </label>
+                        <span style={{ fontSize: '0.8rem', color: 'gray' }}>{form.resumeUrl ? 'Resume Selected' : 'No file chosen'}</span>
+                    </div>
                     <input
                         type="text"
                         name="resumeUrl"

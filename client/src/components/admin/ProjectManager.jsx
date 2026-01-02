@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const ProjectManager = () => {
     const [projects, setProjects] = useState([]);
@@ -100,10 +101,19 @@ const ProjectManager = () => {
             <form onSubmit={handleSubmit} className="glass-card" style={{ marginBottom: '2rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                     <input name="title" value={form.title} onChange={handleChange} placeholder="Title" required style={inputStyle} />
+
+                    {/* Image Upload */}
                     <div>
-                        <input type="file" onChange={handleFileChange} style={{ marginBottom: '0.5rem', color: 'white' }} />
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+                            <label className="btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '0.5rem 1rem', borderRadius: '4px', color: 'white' }}>
+                                <FaCloudUploadAlt /> Choose Image
+                                <input type="file" onChange={handleFileChange} style={{ display: 'none' }} />
+                            </label>
+                            <span style={{ fontSize: '0.8rem', color: 'gray' }}>{form.imageUrl ? 'Image Selected' : 'No file chosen'}</span>
+                        </div>
                         <input name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="Or Image URL" style={inputStyle} />
                     </div>
+
                     <input name="liveUrl" value={form.liveUrl} onChange={handleChange} placeholder="Live URL" style={inputStyle} />
                     <input name="githubUrl" value={form.githubUrl} onChange={handleChange} placeholder="GitHub URL" style={inputStyle} />
                     <input name="tags" value={form.tags} onChange={handleChange} placeholder="Tags (comma separated)" style={inputStyle} />
