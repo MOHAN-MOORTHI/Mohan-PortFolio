@@ -6,10 +6,9 @@ import SkillManager from '../components/admin/SkillManager';
 import AboutManager from '../components/admin/AboutManager';
 import ExperienceManager from '../components/admin/ExperienceManager';
 import CertificationManager from '../components/admin/CertificationManager';
-
 import MessageManager from '../components/admin/MessageManager';
-
 import { motion } from 'framer-motion';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 const Dashboard = () => {
     const { logout, user } = useAuth();
@@ -39,7 +38,26 @@ const Dashboard = () => {
                 >
                     <span style={{ fontSize: '1.8rem' }}>👋</span> Welcome, {user?.username}
                 </motion.h2>
-                <button onClick={handleLogout} className="btn" style={{ border: '1px solid #ef4444', color: '#ef4444', transition: 'all 0.3s' }}>Logout</button>
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleLogout}
+                    className="btn"
+                    style={{
+                        border: '1px solid rgba(239, 68, 68, 0.5)',
+                        color: '#ef4444',
+                        background: 'rgba(239, 68, 68, 0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease'
+                    }}
+                >
+                    <FaSignOutAlt /> Logout
+                </motion.button>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '2rem' }}>
