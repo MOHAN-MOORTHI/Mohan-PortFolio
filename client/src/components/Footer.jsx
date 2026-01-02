@@ -25,12 +25,18 @@ const Footer = () => {
         fetchSocials();
     }, []);
 
+    const formatUrl = (url) => {
+        if (!url) return '';
+        if (url.startsWith('http://') || url.startsWith('https://')) return url;
+        return `https://${url}`;
+    };
+
     const socialLinks = [
-        { icon: <FaGithub />, url: socials.github, show: !!socials.github },
-        { icon: <FaLinkedin />, url: socials.linkedin, show: !!socials.linkedin },
-        { icon: <FaTwitter />, url: socials.twitter, show: !!socials.twitter },
-        { icon: <FaFacebook />, url: socials.facebook, show: !!socials.facebook },
-        { icon: <FaWhatsapp />, url: socials.whatsapp, show: !!socials.whatsapp },
+        { icon: <FaGithub />, url: formatUrl(socials.github), show: !!socials.github },
+        { icon: <FaLinkedin />, url: formatUrl(socials.linkedin), show: !!socials.linkedin },
+        { icon: <FaTwitter />, url: formatUrl(socials.twitter), show: !!socials.twitter },
+        { icon: <FaFacebook />, url: formatUrl(socials.facebook), show: !!socials.facebook },
+        { icon: <FaWhatsapp />, url: formatUrl(socials.whatsapp), show: !!socials.whatsapp },
         { icon: <FaPhone />, url: socials.mobile ? `tel:${socials.mobile}` : '', show: !!socials.mobile },
         { icon: <FaEnvelope />, url: socials.email ? `mailto:${socials.email}` : '', show: !!socials.email }
     ];
