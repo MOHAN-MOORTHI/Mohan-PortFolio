@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FaTrash } from 'react-icons/fa';
 
 const MessageManager = () => {
     const [messages, setMessages] = useState([]);
@@ -36,11 +37,15 @@ const MessageManager = () => {
                     <div key={msg._id} className="glass" style={{ padding: '1rem', borderRadius: '8px' }}>
                         <div className="flex-between">
                             <h4 style={{ color: 'var(--primary)' }}>{msg.name}</h4>
-                            <small style={{ color: 'var(--text-muted)' }}>{new Date(msg.date).toLocaleDateString()}</small>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                <small style={{ color: 'var(--text-muted)' }}>{new Date(msg.date).toLocaleDateString()}</small>
+                                <button onClick={() => handleDelete(msg._id)} className="btn" style={{ color: '#ef4444', padding: '0.4rem', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.1)' }}>
+                                    <FaTrash />
+                                </button>
+                            </div>
                         </div>
                         <p style={{ fontSize: '0.9rem', color: 'var(--accent)', marginBottom: '0.5rem' }}>{msg.email}</p>
                         <p style={{ background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '4px' }}>{msg.message}</p>
-                        <button onClick={() => handleDelete(msg._id)} className="btn" style={{ fontSize: '0.8rem', marginTop: '0.5rem', background: '#ef4444', color: 'white', padding: '0.3rem 0.8rem' }}>Delete</button>
                     </div>
                 ))}
             </div>
