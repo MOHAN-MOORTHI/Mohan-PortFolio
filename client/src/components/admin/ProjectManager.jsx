@@ -5,6 +5,7 @@ const ProjectManager = () => {
     const [projects, setProjects] = useState([]);
     const [form, setForm] = useState({ title: '', description: '', tags: '', liveUrl: '', githubUrl: '', imageUrl: '' });
     const [editingId, setEditingId] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const fetchProjects = async () => {
         try {
@@ -23,6 +24,9 @@ const ProjectManager = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
         const projectData = { ...form, tags: form.tags.split(',').map(tag => tag.trim()) };
 
         try {
@@ -37,8 +41,12 @@ const ProjectManager = () => {
         } catch (err) {
             console.error(err);
             alert('Error saving project');
+        } finally {
+            setIsSubmitting(false);
         }
     };
+
+
 
     const handleEdit = (project) => {
         setForm({
@@ -93,7 +101,9 @@ const ProjectManager = () => {
                     <input name="tags" value={form.tags} onChange={handleChange} placeholder="Tags (comma separated)" style={inputStyle} />
                 </div>
                 <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" required rows="3" style={{ ...inputStyle, width: '100%', marginTop: '1rem' }} />
-                <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem' }}>{editingId ? 'Update' : 'Add'} Project</button>
+                <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem' }} disabled={isSubmitting}>
+                    {isSubmitting ? 'Saving...' : (editingId ? 'Update' : 'Add')} Project
+                </button>
                 {editingId && <button type="button" onClick={() => { setEditingId(null); setForm({ title: '', description: '', tags: '', liveUrl: '', githubUrl: '', imageUrl: '' }); }} className="btn" style={{ marginLeft: '1rem', border: '1px solid #666' }}>Cancel</button>}
             </form>
 
