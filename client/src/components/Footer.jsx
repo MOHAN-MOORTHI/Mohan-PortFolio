@@ -85,7 +85,7 @@ const Footer = () => {
                 ))}
             </div>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                &copy; {new Date().getFullYear()} Mohan Moorthi. All rights reserved.
+                &copy; {new Date().getFullYear()} Mohan. All rights reserved.
             </p>
             <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.5rem' }}>
                 Built with React, Node.js & Three.js
