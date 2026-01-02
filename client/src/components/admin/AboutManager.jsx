@@ -35,6 +35,27 @@ const AboutManager = () => {
         }
     };
 
+    // functions
+    const uploadFile = async (e, field) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            setStatus('Uploading...');
+            const res = await axios.post('/api/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data', 'x-auth-token': localStorage.getItem('token') }
+            });
+            setForm(prev => ({ ...prev, [field]: res.data.filePath }));
+            setStatus('Upload successful!');
+        } catch (err) {
+            console.error(err);
+            setStatus('Upload failed.');
+        }
+    };
+
     return (
         <div>
             <h3>Manage About Section</h3>
@@ -50,24 +71,26 @@ const AboutManager = () => {
                     />
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Profile Image URL</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Profile Image</label>
+                    <input type="file" onChange={(e) => uploadFile(e, 'imageUrl')} style={{ marginBottom: '0.5rem', color: 'white' }} />
                     <input
                         type="text"
                         name="imageUrl"
                         value={form.imageUrl}
                         onChange={handleChange}
-                        placeholder="https://example.com/me.jpg"
+                        placeholder="Or Image URL"
                         style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid #444', background: '#0f172a', color: 'white' }}
                     />
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Resume URL (PDF)</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Resume (PDF)</label>
+                    <input type="file" onChange={(e) => uploadFile(e, 'resumeUrl')} style={{ marginBottom: '0.5rem', color: 'white' }} />
                     <input
                         type="text"
                         name="resumeUrl"
                         value={form.resumeUrl}
                         onChange={handleChange}
-                        placeholder="https://example.com/resume.pdf"
+                        placeholder="Or Resume URL"
                         style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid #444', background: '#0f172a', color: 'white' }}
                     />
                 </div>

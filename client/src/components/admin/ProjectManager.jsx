@@ -59,13 +59,35 @@ const ProjectManager = () => {
         }
     };
 
+    // function
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await axios.post('/api/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data', 'x-auth-token': localStorage.getItem('token') }
+            });
+            setForm({ ...form, imageUrl: res.data.filePath });
+        } catch (err) {
+            console.error(err);
+            alert('File upload failed');
+        }
+    };
+
     return (
         <div>
             <h3>Manage Projects</h3>
             <form onSubmit={handleSubmit} className="glass-card" style={{ marginBottom: '2rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                     <input name="title" value={form.title} onChange={handleChange} placeholder="Title" required style={inputStyle} />
-                    <input name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="Image URL" style={inputStyle} />
+                    <div>
+                        <input type="file" onChange={handleFileChange} style={{ marginBottom: '0.5rem', color: 'white' }} />
+                        <input name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="Or Image URL" style={inputStyle} />
+                    </div>
                     <input name="liveUrl" value={form.liveUrl} onChange={handleChange} placeholder="Live URL" style={inputStyle} />
                     <input name="githubUrl" value={form.githubUrl} onChange={handleChange} placeholder="GitHub URL" style={inputStyle} />
                     <input name="tags" value={form.tags} onChange={handleChange} placeholder="Tags (comma separated)" style={inputStyle} />

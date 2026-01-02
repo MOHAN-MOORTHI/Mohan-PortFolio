@@ -251,4 +251,20 @@ router.delete('/certifications/:id', auth, async (req, res) => {
     }
 });
 
+// --- FILE UPLOAD ROUTE ---
+router.post('/upload', auth, (req, res) => {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).json({ msg: 'No files were uploaded.' });
+    }
+
+    const file = req.files.file;
+    const uploadPath = process.cwd() + '/uploads/' + file.name;
+
+    file.mv(uploadPath, function (err) {
+        if (err) return res.status(500).send(err);
+        // Return relative path for frontend access
+        res.json({ filePath: `/api/uploads/${file.name}` });
+    });
+});
+
 module.exports = router;
