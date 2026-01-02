@@ -48,8 +48,19 @@ const Navbar = () => {
         `}
             </style>
             <nav className="nav-container" style={{ position: 'fixed', width: '100%', top: 0, zIndex: 1000, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Link to="/" onClick={() => window.scrollTo(0, 0)} style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white', textDecoration: 'none' }}>
-                    Portfolio.
+                <Link to="/" onClick={() => window.scrollTo(0, 0)} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+                    <span style={{
+                        fontSize: '1.8rem',
+                        fontWeight: '800',
+                        background: 'linear-gradient(to right, #c084fc, #6366f1, #3b82f6)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        letterSpacing: '-1px'
+                    }}>
+                        Portfolio
+                    </span>
+                    <span style={{ fontSize: '1.8rem', fontWeight: '800', color: '#6366f1' }}>.</span>
                 </Link>
 
                 {/* Desktop Menu */}
