@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AboutManager = () => {
-    const [form, setForm] = useState({ bio: '', imageUrl: '', resumeUrl: '', github: '', linkedin: '', twitter: '', whatsapp: '', email: '' });
+    const [form, setForm] = useState({ bio: '', imageUrl: '', resumeUrl: '', github: '', linkedin: '', twitter: '', whatsapp: '', facebook: '', mobile: '', email: '' });
     const [status, setStatus] = useState('');
 
     useEffect(() => {
@@ -17,6 +17,8 @@ const AboutManager = () => {
                     linkedin: res.data.linkedin || '',
                     twitter: res.data.twitter || '',
                     whatsapp: res.data.whatsapp || '',
+                    facebook: res.data.facebook || '',
+                    mobile: res.data.mobile || '',
                     email: res.data.email || ''
                 });
             } catch (err) {
@@ -109,6 +111,8 @@ const AboutManager = () => {
                     <input name="twitter" value={form.twitter} onChange={handleChange} placeholder="Twitter (X) URL" style={inputStyle} />
                     <input name="whatsapp" value={form.whatsapp} onChange={handleChange} placeholder="WhatsApp URL" style={inputStyle} />
                     <input name="email" value={form.email} onChange={handleChange} placeholder="Email Address (mailto: will be added automatically)" style={inputStyle} />
+                    <input name="facebook" value={form.facebook} onChange={handleChange} placeholder="Facebook URL" style={inputStyle} />
+                    <input name="mobile" value={form.mobile} onChange={handleChange} placeholder="Mobile Number (tel:)" style={inputStyle} />
                 </div>
                 <div style={{ marginBottom: '1rem' }}></div>
                 <button type="submit" className="btn btn-primary">Save Changes</button>

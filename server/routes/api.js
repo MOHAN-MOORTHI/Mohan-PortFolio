@@ -184,6 +184,8 @@ router.post('/about', auth, async (req, res) => {
             about.linkedin = req.body.linkedin;
             about.twitter = req.body.twitter;
             about.whatsapp = req.body.whatsapp;
+            about.facebook = req.body.facebook;
+            about.mobile = req.body.mobile;
             about.email = req.body.email;
             await about.save();
         } else {

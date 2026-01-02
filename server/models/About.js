@@ -8,6 +8,8 @@ const AboutSchema = new mongoose.Schema({
     linkedin: { type: String, default: '' },
     twitter: { type: String, default: '' },
     whatsapp: { type: String, default: '' },
+    facebook: { type: String, default: '' },
+    mobile: { type: String, default: '' },
     email: { type: String, default: '' }
 });
 

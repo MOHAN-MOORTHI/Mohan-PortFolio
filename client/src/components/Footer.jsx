@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaGithub, FaLinkedin, FaTwitter, FaWhatsapp, FaEnvelope } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaWhatsapp, FaEnvelope, FaFacebook, FaPhone } from 'react-icons/fa';
 
 const Footer = () => {
-    const [socials, setSocials] = useState({ github: '', linkedin: '', twitter: '', whatsapp: '', email: '' });
+    const [socials, setSocials] = useState({ github: '', linkedin: '', twitter: '', whatsapp: '', facebook: '', mobile: '', email: '' });
 
     useEffect(() => {
         const fetchSocials = async () => {
@@ -14,6 +14,8 @@ const Footer = () => {
                     linkedin: res.data.linkedin || '',
                     twitter: res.data.twitter || '',
                     whatsapp: res.data.whatsapp || '',
+                    facebook: res.data.facebook || '',
+                    mobile: res.data.mobile || '',
                     email: res.data.email || ''
                 });
             } catch (err) {
@@ -27,7 +29,9 @@ const Footer = () => {
         { icon: <FaGithub />, url: socials.github, show: !!socials.github },
         { icon: <FaLinkedin />, url: socials.linkedin, show: !!socials.linkedin },
         { icon: <FaTwitter />, url: socials.twitter, show: !!socials.twitter },
+        { icon: <FaFacebook />, url: socials.facebook, show: !!socials.facebook },
         { icon: <FaWhatsapp />, url: socials.whatsapp, show: !!socials.whatsapp },
+        { icon: <FaPhone />, url: socials.mobile ? `tel:${socials.mobile}` : '', show: !!socials.mobile },
         { icon: <FaEnvelope />, url: socials.email ? `mailto:${socials.email}` : '', show: !!socials.email }
     ];
 
