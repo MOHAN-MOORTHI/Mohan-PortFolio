@@ -21,7 +21,8 @@ A high-performance, futuristic portfolio website built with the **MERN Stack** (
 - **Admin Dashboard**:
   - **New! Setup Admin**: Create your admin account directly on the live site.
   - Manage Projects, Skills, Experience, and Certifications.
-  - Update "About Me" details (Bio, Resume, Profile Image).
+  - **Social Links**: Update your social media profiles (GitHub, LinkedIn, WhatsApp, etc.).
+  - **File Uploads**: Directly upload images and resumes.
   - View and Delete Contact Form Messages.
 
 ---
