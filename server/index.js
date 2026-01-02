@@ -15,7 +15,7 @@ const path = require('path');
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio')
