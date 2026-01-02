@@ -9,6 +9,8 @@ import CertificationManager from '../components/admin/CertificationManager';
 
 import MessageManager from '../components/admin/MessageManager';
 
+import { motion } from 'framer-motion';
+
 const Dashboard = () => {
     const { logout, user } = useAuth();
     const navigate = useNavigate();
@@ -22,8 +24,22 @@ const Dashboard = () => {
     return (
         <div style={{ minHeight: '100vh', padding: '2rem' }}>
             <div className="flex-between" style={{ marginBottom: '2rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem' }}>
-                <h2>Welcome, {user?.username}</h2>
-                <button onClick={handleLogout} className="btn" style={{ border: '1px solid #ef4444', color: '#ef4444' }}>Logout</button>
+                <motion.h2
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    style={{
+                        fontSize: '2rem',
+                        background: 'linear-gradient(to right, #22d3ee, #818cf8, #c084fc)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                    }}
+                >
+                    <span style={{ fontSize: '1.8rem' }}>👋</span> Welcome, {user?.username}
+                </motion.h2>
+                <button onClick={handleLogout} className="btn" style={{ border: '1px solid #ef4444', color: '#ef4444', transition: 'all 0.3s' }}>Logout</button>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '2rem' }}>
