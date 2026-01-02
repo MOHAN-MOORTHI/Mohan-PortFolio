@@ -13,7 +13,7 @@ import { FaSignOutAlt } from 'react-icons/fa';
 const Dashboard = () => {
     const { logout, user } = useAuth();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('projects');
+    const [activeTab, setActiveTab] = useState('about'); // Changed default to 'about'
 
     const handleLogout = () => {
         logout();
@@ -63,6 +63,15 @@ const Dashboard = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '2rem' }}>
                 <aside className="glass-card" style={{ height: 'fit-content', padding: '1rem' }}>
                     <ul style={{ listStyle: 'none' }}>
+                        {/* Moved About Me to the top */}
+                        <li style={{ marginBottom: '1rem' }}>
+                            <button
+                                onClick={() => setActiveTab('about')}
+                                style={{ ...tabBtnStyle, color: activeTab === 'about' ? 'var(--primary)' : 'white' }}
+                            >
+                                About Me
+                            </button>
+                        </li>
                         <li style={{ marginBottom: '1rem' }}>
                             <button
                                 onClick={() => setActiveTab('projects')}
@@ -77,14 +86,6 @@ const Dashboard = () => {
                                 style={{ ...tabBtnStyle, color: activeTab === 'skills' ? 'var(--primary)' : 'white' }}
                             >
                                 Skills
-                            </button>
-                        </li>
-                        <li style={{ marginBottom: '1rem' }}>
-                            <button
-                                onClick={() => setActiveTab('about')}
-                                style={{ ...tabBtnStyle, color: activeTab === 'about' ? 'var(--primary)' : 'white' }}
-                            >
-                                About Me
                             </button>
                         </li>
                         <li style={{ marginBottom: '1rem' }}>
@@ -115,11 +116,11 @@ const Dashboard = () => {
                 </aside>
 
                 <main>
+                    {activeTab === 'about' && <AboutManager />}
                     {activeTab === 'projects' && <ProjectManager />}
                     {activeTab === 'skills' && <SkillManager />}
                     {activeTab === 'experience' && <ExperienceManager />}
                     {activeTab === 'certifications' && <CertificationManager />}
-                    {activeTab === 'about' && <AboutManager />}
                     {activeTab === 'messages' && <MessageManager />}
                 </main>
             </div>
