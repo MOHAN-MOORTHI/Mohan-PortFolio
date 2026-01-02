@@ -20,6 +20,12 @@ const Certifications = () => {
 
 
 
+    const formatUrl = (url) => {
+        if (!url) return '';
+        if (url.startsWith('http://') || url.startsWith('https://')) return url;
+        return `https://${url}`;
+    };
+
     return (
         <section id="certifications" className="section">
             <motion.h2
@@ -50,7 +56,7 @@ const Certifications = () => {
                             <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>{cert.date}</p>
                             {cert.description && <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>{cert.description}</p>}
                             {cert.link && (
-                                <a href={cert.link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent)', fontSize: '0.9rem', textDecoration: 'none' }}>
+                                <a href={formatUrl(cert.link)} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent)', fontSize: '0.9rem', textDecoration: 'none' }}>
                                     View Certificate <FaExternalLinkAlt style={{ fontSize: '0.8rem' }} />
                                 </a>
                             )}

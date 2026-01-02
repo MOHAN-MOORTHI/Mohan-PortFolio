@@ -22,6 +22,12 @@ const Projects = () => {
         fetchProjects();
     }, []);
 
+    const formatUrl = (url) => {
+        if (!url) return '';
+        if (url.startsWith('http://') || url.startsWith('https://')) return url;
+        return `https://${url}`;
+    };
+
     if (loading) return <div className="text-center p-10">Loading Projects...</div>;
     if (error) return <div className="text-center p-10 text-red-500">{error}</div>;
 
@@ -62,8 +68,8 @@ const Projects = () => {
                             ))}
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto' }}>
-                            {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ flex: 1, textAlign: 'center', padding: '0.5rem' }}>Live</a>}
-                            {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn" style={{ flex: 1, textAlign: 'center', border: '1px solid var(--primary)', padding: '0.5rem' }}>Code</a>}
+                            {project.liveUrl && <a href={formatUrl(project.liveUrl)} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ flex: 1, textAlign: 'center', padding: '0.5rem' }}>Live</a>}
+                            {project.githubUrl && <a href={formatUrl(project.githubUrl)} target="_blank" rel="noopener noreferrer" className="btn" style={{ flex: 1, textAlign: 'center', border: '1px solid var(--primary)', padding: '0.5rem' }}>Code</a>}
                         </div>
                     </motion.div>
                 ))}
