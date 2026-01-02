@@ -6,6 +6,9 @@ import Stars from '../components/Stars';
 
 const Hero = () => {
     const [heroData, setHeroData] = useState({
+        heroHeadline: "Hi, I'm Mohan",
+        heroSubHeadline: "Full Stack Developer",
+        heroDescription: "Building futuristic, scalable, and responsive web applications with the MERN stack.",
         viewProjectsBtnText: 'View Projects',
         contactBtnText: 'Contact Me'
     });
@@ -16,6 +19,9 @@ const Hero = () => {
                 const res = await axios.get('/api/about');
                 if (res.data) {
                     setHeroData({
+                        heroHeadline: res.data.heroHeadline || "Hi, I'm Mohan",
+                        heroSubHeadline: res.data.heroSubHeadline || "Full Stack Developer",
+                        heroDescription: res.data.heroDescription || "Building futuristic, scalable, and responsive web applications with the MERN stack.",
                         viewProjectsBtnText: res.data.viewProjectsBtnText || 'View Projects',
                         contactBtnText: res.data.contactBtnText || 'Contact Me'
                     });
@@ -44,8 +50,8 @@ const Hero = () => {
                     transition={{ duration: 0.8 }}
                     style={{ marginBottom: '1rem', background: 'linear-gradient(to right, #6366f1, #a855f7, #22d3ee)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
                 >
-                    Hi, I'm Mohan <br />
-                    <span style={{ fontSize: '2.5rem', color: 'white', WebkitTextFillColor: 'white' }}>Full Stack Developer</span>
+                    {heroData.heroHeadline} <br />
+                    <span style={{ fontSize: '2.5rem', color: 'white', WebkitTextFillColor: 'white' }}>{heroData.heroSubHeadline}</span>
                 </motion.h1>
                 <motion.p
                     initial={{ opacity: 0, y: 50 }}
@@ -53,7 +59,7 @@ const Hero = () => {
                     transition={{ delay: 0.3, duration: 0.8 }}
                     style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 2rem' }}
                 >
-                    Building futuristic, scalable, and responsive web applications with the MERN stack.
+                    {heroData.heroDescription}
                 </motion.p>
                 <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}

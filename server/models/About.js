@@ -12,7 +12,10 @@ const AboutSchema = new mongoose.Schema({
     mobile: { type: String, default: '' },
     email: { type: String, default: '' },
     contactBtnText: { type: String, default: 'Contact Me' },
-    viewProjectsBtnText: { type: String, default: 'View Projects' }
+    viewProjectsBtnText: { type: String, default: 'View Projects' },
+    heroHeadline: { type: String, default: "Hi, I'm Mohan" },
+    heroSubHeadline: { type: String, default: "Full Stack Developer" },
+    heroDescription: { type: String, default: "Building futuristic, scalable, and responsive web applications with the MERN stack." }
 });
 
 module.exports = mongoose.model('About', AboutSchema);

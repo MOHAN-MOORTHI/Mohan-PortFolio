@@ -189,6 +189,9 @@ router.post('/about', auth, async (req, res) => {
             about.email = req.body.email;
             about.contactBtnText = req.body.contactBtnText;
             about.viewProjectsBtnText = req.body.viewProjectsBtnText;
+            about.heroHeadline = req.body.heroHeadline;
+            about.heroSubHeadline = req.body.heroSubHeadline;
+            about.heroDescription = req.body.heroDescription;
             await about.save();
         } else {
             about = new About(req.body);

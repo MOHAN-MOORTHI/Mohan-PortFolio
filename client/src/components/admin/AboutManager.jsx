@@ -7,7 +7,8 @@ const AboutManager = () => {
     const [form, setForm] = useState({
         bio: '', imageUrl: '', resumeUrl: '',
         github: '', linkedin: '', twitter: '', whatsapp: '', facebook: '', mobile: '', email: '',
-        contactBtnText: 'Contact Me', viewProjectsBtnText: 'View Projects'
+        contactBtnText: 'Contact Me', viewProjectsBtnText: 'View Projects',
+        heroHeadline: '', heroSubHeadline: '', heroDescription: ''
     });
 
     useEffect(() => {
@@ -26,7 +27,10 @@ const AboutManager = () => {
                     mobile: res.data.mobile || '',
                     email: res.data.email || '',
                     contactBtnText: res.data.contactBtnText || 'Contact Me',
-                    viewProjectsBtnText: res.data.viewProjectsBtnText || 'View Projects'
+                    viewProjectsBtnText: res.data.viewProjectsBtnText || 'View Projects',
+                    heroHeadline: res.data.heroHeadline || "Hi, I'm Mohan",
+                    heroSubHeadline: res.data.heroSubHeadline || "Full Stack Developer",
+                    heroDescription: res.data.heroDescription || "Building futuristic, scalable, and responsive web applications with the MERN stack."
                 });
             } catch (err) {
                 console.error(err);
@@ -135,6 +139,20 @@ const AboutManager = () => {
                     <input name="email" value={form.email} onChange={handleChange} placeholder="Email Address (mailto: will be added automatically)" style={inputStyle} />
                     <input name="facebook" value={form.facebook} onChange={handleChange} placeholder="Facebook URL" style={inputStyle} />
                     <input name="mobile" value={form.mobile} onChange={handleChange} placeholder="Mobile Number (tel:)" style={inputStyle} />
+                </div>
+
+                <h4 style={{ marginBottom: '1rem', borderBottom: '1px solid #444', paddingBottom: '0.5rem', marginTop: '1rem' }}>Hero Section Customization</h4>
+                <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Main Headline (e.g., Hi, I'm Mohan)</label>
+                    <input name="heroHeadline" value={form.heroHeadline} onChange={handleChange} style={inputStyle} />
+                </div>
+                <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Sub Headline (e.g., Full Stack Developer)</label>
+                    <input name="heroSubHeadline" value={form.heroSubHeadline} onChange={handleChange} style={inputStyle} />
+                </div>
+                <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Description</label>
+                    <textarea name="heroDescription" value={form.heroDescription} onChange={handleChange} rows="3" style={inputStyle} />
                 </div>
 
                 <h4 style={{ marginBottom: '1rem', borderBottom: '1px solid #444', paddingBottom: '0.5rem', marginTop: '1rem' }}>Button Customization</h4>
