@@ -259,13 +259,26 @@ router.delete('/certifications/:id', auth, async (req, res) => {
 });
 
 // --- FILE UPLOAD ROUTE ---
+const fs = require('fs');
+const path = require('path');
+
+// ... imports ...
+
 router.post('/upload', auth, (req, res) => {
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json({ msg: 'No files were uploaded.' });
     }
 
     const file = req.files.file;
-    const uploadPath = process.cwd() + '/uploads/' + file.name;
+    // __dirname is 'server/routes', so go up one level to 'server/uploads'
+    const uploadDir = path.join(__dirname, '..', 'uploads');
+
+    // Ensure directory exists
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const uploadPath = path.join(uploadDir, file.name);
 
     file.mv(uploadPath, function (err) {
         if (err) return res.status(500).send(err);
