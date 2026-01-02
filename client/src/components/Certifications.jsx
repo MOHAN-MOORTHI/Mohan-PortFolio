@@ -18,7 +18,7 @@ const Certifications = () => {
         fetchCerts();
     }, []);
 
-    if (certifications.length === 0) return null;
+
 
     return (
         <section id="certifications" className="section">

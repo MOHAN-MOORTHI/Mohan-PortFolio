@@ -54,7 +54,7 @@ const Navbar = () => {
 
                 {/* Desktop Menu */}
                 <div className="desktop-menu">
-                    {['About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
+                    {['About', 'Skills', 'Experience', 'Certifications', 'Projects', 'Contact'].map((item) => (
                         <button
                             key={item}
                             onClick={() => scrollToSection(item.toLowerCase())}
@@ -87,7 +87,7 @@ const Navbar = () => {
                             alignItems: 'center', gap: '2rem', zIndex: 999, borderBottom: '1px solid rgba(255,255,255,0.1)'
                         }}
                     >
-                        {['About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
+                        {['About', 'Skills', 'Experience', 'Certifications', 'Projects', 'Contact'].map((item) => (
                             <button
                                 key={item}
                                 onClick={() => scrollToSection(item.toLowerCase())}
