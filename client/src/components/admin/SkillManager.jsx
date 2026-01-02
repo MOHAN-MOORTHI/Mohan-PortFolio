@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const SkillManager = () => {
     const [skills, setSkills] = useState([]);
@@ -11,6 +12,7 @@ const SkillManager = () => {
             setSkills(res.data);
         } catch (err) {
             console.error(err);
+            toast.error('Failed to fetch skills');
         }
     };
 
@@ -22,23 +24,28 @@ const SkillManager = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const loadingToast = toast.loading('Adding Skill...');
         try {
             await axios.post('/api/skills', form);
             setForm({ name: '', level: 50, category: 'Other', icon: '' });
+            toast.success('Skill added!', { id: loadingToast });
             fetchSkills();
         } catch (err) {
             console.error(err);
+            toast.error('Failed to add skill', { id: loadingToast });
         }
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Delete skill?')) {
-            try {
-                await axios.delete(`/api/skills/${id}`);
-                fetchSkills();
-            } catch (err) {
-                console.error(err);
-            }
+        if (!window.confirm('Delete skill?')) return;
+
+        try {
+            await axios.delete(`/api/skills/${id}`);
+            toast.success('Skill deleted');
+            fetchSkills();
+        } catch (err) {
+            console.error(err);
+            toast.error('Failed to delete skill');
         }
     };
 

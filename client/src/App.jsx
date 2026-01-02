@@ -11,11 +11,20 @@ const AdminRoute = ({ children }) => {
     return token ? children : <Navigate to="/admin" />;
 };
 
+import { Toaster } from 'react-hot-toast';
+
 function App() {
     return (
         <AuthProvider>
             <Router>
                 <div className="App">
+                    <Toaster position="top-right" toastOptions={{
+                        style: {
+                            background: '#1e293b',
+                            color: '#fff',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                        },
+                    }} />
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/admin" element={<Login />} />

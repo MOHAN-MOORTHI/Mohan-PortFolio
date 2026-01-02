@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { FaTrash, FaAward } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 const CertificationManager = () => {
     const { token } = useAuth();
@@ -18,6 +19,7 @@ const CertificationManager = () => {
             setCerts(res.data);
         } catch (err) {
             console.error(err);
+            toast.error('Failed to fetch certifications');
         }
     };
 
@@ -25,21 +27,28 @@ const CertificationManager = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const loadingToast = toast.loading('Adding Certification...');
         try {
             await axios.post('/api/certifications', form, { headers: { 'x-auth-token': token } });
             setForm({ name: '', issuer: '', date: '', link: '', description: '' });
+            toast.success('Certification added!', { id: loadingToast });
             fetchCerts();
         } catch (err) {
             console.error(err);
+            toast.error('Failed to add certification', { id: loadingToast });
         }
     };
 
     const handleDelete = async (id) => {
+        if (!window.confirm('Delete this certification?')) return;
+        const loadingToast = toast.loading('Deleting...');
         try {
             await axios.delete(`/api/certifications/${id}`, { headers: { 'x-auth-token': token } });
+            toast.success('Certification deleted', { id: loadingToast });
             fetchCerts();
         } catch (err) {
             console.error(err);
+            toast.error('Failed to delete', { id: loadingToast });
         }
     };
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const AboutManager = () => {
     const [form, setForm] = useState({ bio: '', imageUrl: '', resumeUrl: '', github: '', linkedin: '', twitter: '', whatsapp: '', facebook: '', mobile: '', email: '' });
-    const [status, setStatus] = useState('');
 
     useEffect(() => {
         const fetchAbout = async () => {
@@ -23,6 +23,7 @@ const AboutManager = () => {
                 });
             } catch (err) {
                 console.error(err);
+                toast.error('Failed to fetch About data');
             }
         };
         fetchAbout();
@@ -32,12 +33,12 @@ const AboutManager = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setStatus('Saving...');
+        const loadingToast = toast.loading('Saving...');
         try {
             await axios.post('/api/about', form);
-            setStatus('About section updated!');
+            toast.success('About section updated!', { id: loadingToast });
         } catch (err) {
-            setStatus('Failed to update.');
+            toast.error('Failed to update.', { id: loadingToast });
             console.error(err);
         }
     };
@@ -50,16 +51,16 @@ const AboutManager = () => {
         const formData = new FormData();
         formData.append('file', file);
 
+        const loadingToast = toast.loading('Uploading...');
         try {
-            setStatus('Uploading...');
             const res = await axios.post('/api/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data', 'x-auth-token': localStorage.getItem('token') }
             });
             setForm(prev => ({ ...prev, [field]: res.data.filePath }));
-            setStatus('Upload successful!');
+            toast.success('Upload successful!', { id: loadingToast });
         } catch (err) {
             console.error(err);
-            setStatus('Upload failed.');
+            toast.error('Upload failed.', { id: loadingToast });
         }
     };
 
@@ -90,7 +91,6 @@ const AboutManager = () => {
                     />
                 </div>
 
-
                 <div style={{ marginBottom: '1rem' }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem' }}>Resume (PDF)</label>
                     <input type="file" onChange={(e) => uploadFile(e, 'resumeUrl')} style={{ marginBottom: '0.5rem', color: 'white' }} />
@@ -116,9 +116,8 @@ const AboutManager = () => {
                 </div>
                 <div style={{ marginBottom: '1rem' }}></div>
                 <button type="submit" className="btn btn-primary">Save Changes</button>
-                {status && <p style={{ marginTop: '1rem', color: status.includes('Failed') ? 'red' : 'green' }}>{status}</p>}
-            </form >
-        </div >
+            </form>
+        </div>
     );
 };
 

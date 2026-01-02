@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ProjectManager = () => {
     const [projects, setProjects] = useState([]);
@@ -13,6 +14,7 @@ const ProjectManager = () => {
             setProjects(res.data);
         } catch (err) {
             console.error(err);
+            toast.error('Failed to fetch projects');
         }
     };
 
@@ -27,26 +29,27 @@ const ProjectManager = () => {
         if (isSubmitting) return;
 
         setIsSubmitting(true);
+        const loadingToast = toast.loading(editingId ? 'Updating Project...' : 'Adding Project...');
         const projectData = { ...form, tags: form.tags.split(',').map(tag => tag.trim()) };
 
         try {
             if (editingId) {
                 await axios.put(`/api/projects/${editingId}`, projectData);
+                toast.success('Project updated successfully!', { id: loadingToast });
             } else {
                 await axios.post('/api/projects', projectData);
+                toast.success('Project added successfully!', { id: loadingToast });
             }
             setForm({ title: '', description: '', tags: '', liveUrl: '', githubUrl: '', imageUrl: '' });
             setEditingId(null);
             fetchProjects();
         } catch (err) {
             console.error(err);
-            alert('Error saving project');
+            toast.error('Error saving project', { id: loadingToast });
         } finally {
             setIsSubmitting(false);
         }
     };
-
-
 
     const handleEdit = (project) => {
         setForm({
@@ -54,20 +57,23 @@ const ProjectManager = () => {
             tags: project.tags.join(', ')
         });
         setEditingId(project._id);
+        toast('Edit mode enabled', { icon: '✏️' });
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure?')) {
+        if (window.confirm('Are you sure you want to delete this project?')) {
+            const loadingToast = toast.loading('Deleting...');
             try {
                 await axios.delete(`/api/projects/${id}`);
+                toast.success('Project deleted', { id: loadingToast });
                 fetchProjects();
             } catch (err) {
                 console.error(err);
+                toast.error('Failed to delete project', { id: loadingToast });
             }
         }
     };
 
-    // function
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -75,14 +81,16 @@ const ProjectManager = () => {
         const formData = new FormData();
         formData.append('file', file);
 
+        const loadingToast = toast.loading('Uploading image...');
         try {
             const res = await axios.post('/api/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data', 'x-auth-token': localStorage.getItem('token') }
             });
             setForm({ ...form, imageUrl: res.data.filePath });
+            toast.success('Image uploaded!', { id: loadingToast });
         } catch (err) {
             console.error(err);
-            alert('File upload failed');
+            toast.error('File upload failed', { id: loadingToast });
         }
     };
 
