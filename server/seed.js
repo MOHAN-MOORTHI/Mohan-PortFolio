@@ -76,44 +76,14 @@ const seedData = async () => {
         // Create Experience
         const Experience = require('./models/Experience');
         await Experience.deleteMany({});
-        const experiences = [
-            {
-                role: "Senior Full Stack Developer",
-                company: "TechNova Systems",
-                duration: "2022 - Present",
-                description: "Leading a team of 5 developers to build scalable MERN stack solutions. Implemented microservices architecture reducing server costs by 30%."
-            },
-            {
-                role: "Frontend Developer",
-                company: "Creative Pixels",
-                duration: "2020 - 2022",
-                description: "Developed interactive 3D web experiences using Three.js and React. Collaborated with designers to deliver award-winning websites."
-            }
-        ];
-        await Experience.insertMany(experiences);
-        console.log('Experience Seeded');
+        // await Experience.insertMany(experiences); 
+        console.log('Experience Cleared (No sample data)');
 
         // Create Certifications
         const Certification = require('./models/Certification');
         await Certification.deleteMany({});
-        const certifications = [
-            {
-                name: "Meta Frontend Developer Professional Certificate",
-                issuer: "Meta (Coursera)",
-                date: "Nov 2023",
-                description: "Advanced proficiency in React, JavaScript, and UI/UX design principles.",
-                link: "https://www.coursera.org/professional-certificates/meta-front-end-developer"
-            },
-            {
-                name: "AWS Certified Cloud Practitioner",
-                issuer: "Amazon Web Services",
-                date: "Aug 2023",
-                description: "Foundational knowledge of AWS Cloud concepts, security, and billing.",
-                link: "https://aws.amazon.com/certification/certified-cloud-practitioner/"
-            }
-        ];
-        await Certification.insertMany(certifications);
-        console.log('Certifications Seeded');
+        // await Certification.insertMany(certifications);
+        console.log('Certifications Cleared (No sample data)');
 
         process.exit();
     } catch (err) {
