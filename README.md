@@ -19,8 +19,9 @@ A high-performance, futuristic portfolio website built with the **MERN Stack** (
   - MongoDB (Mongoose): Database for Projects, Skills, and Messages.
 
 - **Admin Dashboard**:
-  - Manage Projects (Add, Edit, Delete).
-  - Manage Skills (Add, Delete).
+  - **New! Setup Admin**: Create your admin account directly on the live site.
+  - Manage Projects, Skills, Experience, and Certifications.
+  - Update "About Me" details (Bio, Resume, Profile Image).
   - View and Delete Contact Form Messages.
 
 ---
@@ -97,12 +98,18 @@ The frontend runs on Port `5173` or `5174`.
 ---
 
 ## 🔐 Admin Access
-
-1.  Go to `/admin` (e.g., `http://localhost:5173/admin`).
-2.  **Login Credentials** (if you ran `seed.js`):
-    - **Username**: `admin`
-    - **Password**: `admin123`
-3.  Use the dashboard tabs to manage your Portfolio content.
+1.  Go to `/admin` (e.g., `https://your-domain.vercel.app/admin`).
+2.  **First Time Setup**:
+    - Click **"First time setup? Setup Admin"**.
+    - Create your username and password.
+    - This creates your secure admin account in the database.
+3.  **Login**: Use your credentials to access the dashboard.
+4.  **Manage Content**:
+    - **Projects**: Add your latest work.
+    - **Skills**: Update your tech stack.
+    - **Experience**: Add your work history.
+    - **Certifications**: Showcase your achievements.
+    - **About Me**: Update your bio and resume link.
 
 ---
 
