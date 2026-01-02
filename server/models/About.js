@@ -10,7 +10,9 @@ const AboutSchema = new mongoose.Schema({
     whatsapp: { type: String, default: '' },
     facebook: { type: String, default: '' },
     mobile: { type: String, default: '' },
-    email: { type: String, default: '' }
+    email: { type: String, default: '' },
+    contactBtnText: { type: String, default: 'Contact Me' },
+    viewProjectsBtnText: { type: String, default: 'View Projects' }
 });
 
 module.exports = mongoose.model('About', AboutSchema);

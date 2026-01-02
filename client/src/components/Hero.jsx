@@ -1,9 +1,32 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
+import axios from 'axios';
 import { Canvas } from '@react-three/fiber';
 import { motion } from 'framer-motion';
 import Stars from '../components/Stars';
 
 const Hero = () => {
+    const [heroData, setHeroData] = useState({
+        viewProjectsBtnText: 'View Projects',
+        contactBtnText: 'Contact Me'
+    });
+
+    useEffect(() => {
+        const fetchHeroData = async () => {
+            try {
+                const res = await axios.get('/api/about');
+                if (res.data) {
+                    setHeroData({
+                        viewProjectsBtnText: res.data.viewProjectsBtnText || 'View Projects',
+                        contactBtnText: res.data.contactBtnText || 'Contact Me'
+                    });
+                }
+            } catch (err) {
+                console.error('Error fetching hero data:', err);
+            }
+        };
+        fetchHeroData();
+    }, []);
+
     return (
         <section style={{ height: '100vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
@@ -37,8 +60,8 @@ const Hero = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.6, duration: 0.5 }}
                 >
-                    <a href="#projects" className="btn btn-primary" style={{ marginRight: '1rem' }}>View Projects</a>
-                    <a href="#contact" className="btn" style={{ border: '1px solid var(--primary)', color: 'white' }}>Contact Me</a>
+                    <a href="#projects" className="btn btn-primary" style={{ marginRight: '1rem' }}>{heroData.viewProjectsBtnText}</a>
+                    <a href="#contact" className="btn" style={{ border: '1px solid var(--primary)', color: 'white' }}>{heroData.contactBtnText}</a>
                 </motion.div>
             </div>
         </section>

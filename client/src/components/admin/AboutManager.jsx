@@ -4,7 +4,11 @@ import toast from 'react-hot-toast';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const AboutManager = () => {
-    const [form, setForm] = useState({ bio: '', imageUrl: '', resumeUrl: '', github: '', linkedin: '', twitter: '', whatsapp: '', facebook: '', mobile: '', email: '' });
+    const [form, setForm] = useState({
+        bio: '', imageUrl: '', resumeUrl: '',
+        github: '', linkedin: '', twitter: '', whatsapp: '', facebook: '', mobile: '', email: '',
+        contactBtnText: 'Contact Me', viewProjectsBtnText: 'View Projects'
+    });
 
     useEffect(() => {
         const fetchAbout = async () => {
@@ -20,7 +24,9 @@ const AboutManager = () => {
                     whatsapp: res.data.whatsapp || '',
                     facebook: res.data.facebook || '',
                     mobile: res.data.mobile || '',
-                    email: res.data.email || ''
+                    email: res.data.email || '',
+                    contactBtnText: res.data.contactBtnText || 'Contact Me',
+                    viewProjectsBtnText: res.data.viewProjectsBtnText || 'View Projects'
                 });
             } catch (err) {
                 console.error(err);
@@ -129,6 +135,18 @@ const AboutManager = () => {
                     <input name="email" value={form.email} onChange={handleChange} placeholder="Email Address (mailto: will be added automatically)" style={inputStyle} />
                     <input name="facebook" value={form.facebook} onChange={handleChange} placeholder="Facebook URL" style={inputStyle} />
                     <input name="mobile" value={form.mobile} onChange={handleChange} placeholder="Mobile Number (tel:)" style={inputStyle} />
+                </div>
+
+                <h4 style={{ marginBottom: '1rem', borderBottom: '1px solid #444', paddingBottom: '0.5rem', marginTop: '1rem' }}>Button Customization</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>"View Projects" Button Text</label>
+                        <input name="viewProjectsBtnText" value={form.viewProjectsBtnText} onChange={handleChange} placeholder="View Projects" style={inputStyle} />
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>"Contact Me" Button Text</label>
+                        <input name="contactBtnText" value={form.contactBtnText} onChange={handleChange} placeholder="Contact Me" style={inputStyle} />
+                    </div>
                 </div>
                 <div style={{ marginBottom: '1rem' }}></div>
                 <button type="submit" className="btn btn-primary">Save Changes</button>
