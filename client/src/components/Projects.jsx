@@ -5,10 +5,12 @@ import { motion } from 'framer-motion';
 import { mockProjects } from '../data/mockData';
 
 const Projects = () => {
+    // State to hold projects data
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Fetch projects from API, fall back to mock data on error for resilience
     useEffect(() => {
         const fetchProjects = async () => {
             try {
@@ -24,6 +26,7 @@ const Projects = () => {
         fetchProjects();
     }, []);
 
+    // Helper to format URLs
     const formatUrl = (url) => {
         if (!url) return '';
         if (url.startsWith('http://') || url.startsWith('https://')) return url;

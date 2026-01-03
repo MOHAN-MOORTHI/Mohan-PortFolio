@@ -5,14 +5,17 @@ import axios from 'axios';
 import { mockAbout } from '../data/mockData';
 
 const About = () => {
+    // Initialize state with mock data for immediate rendering (better UX)
     const [about, setAbout] = useState(mockAbout);
 
+    // Fetch dynamic data from backend
     useEffect(() => {
         const fetchAbout = async () => {
             try {
                 const res = await axios.get('/api/about');
                 if (res.data) setAbout(res.data);
             } catch (err) {
+                // Fallback to mock data is handled by initial state, just log error
                 console.error("Failed to fetch about data, using mock", err);
             }
         };
@@ -22,6 +25,7 @@ const About = () => {
     return (
         <section id="about" className="section">
             <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                {/* Visual Header with Animation */}
                 <motion.h2
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -32,6 +36,7 @@ const About = () => {
                 </motion.h2>
 
                 <div className="flex-center" style={{ gap: '2rem', flexWrap: 'wrap' }}>
+                    {/* Profile Image with performance optimization */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
                         whileInView={{ opacity: 1, scale: 1 }}
@@ -41,11 +46,12 @@ const About = () => {
                         <img
                             src={about.imageUrl || "https://via.placeholder.com/200"}
                             alt="Profile"
-                            loading="lazy"
+                            loading="lazy" // Lazy load image for performance
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                     </motion.div>
 
+                    {/* Bio Content */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}

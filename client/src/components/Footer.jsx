@@ -4,8 +4,10 @@ import { FaGithub, FaLinkedin, FaTwitter, FaWhatsapp, FaEnvelope, FaFacebook, Fa
 import { mockAbout } from '../data/mockData';
 
 const Footer = () => {
+    // Initialize with mock data for resilience
     const [socials, setSocials] = useState(mockAbout);
 
+    // Fetch dynamic contact info from backend
     useEffect(() => {
         const fetchSocials = async () => {
             try {

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Contact = () => {
+    // Form state
     const [form, setForm] = useState({ name: '', email: '', message: '' });
     const [status, setStatus] = useState('');
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+    // Handle form submission to backend API
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('Sending...');

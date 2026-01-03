@@ -5,9 +5,11 @@ import { motion } from 'framer-motion';
 import { mockSkills } from '../data/mockData';
 
 const Skills = () => {
+    // State to hold skills data
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // Fetch skills from API with mock data fallback
     useEffect(() => {
         const fetchSkills = async () => {
             try {
@@ -23,6 +25,7 @@ const Skills = () => {
         fetchSkills();
     }, []);
 
+    // Don't render anything while loading to prevent layout shifts/flicker
     if (loading) return null; // Or a spinner, but null is cleaner for skills section initial load
 
     return (
@@ -49,6 +52,7 @@ const Skills = () => {
                             <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{skill.name}</span>
                             <span style={{ color: 'var(--accent)' }}>{skill.level}%</span>
                         </div>
+                        {/* Progress Bar Animation */}
                         <div style={{ width: '100%', height: '10px', background: 'rgba(255,255,255,0.1)', borderRadius: '5px', overflow: 'hidden' }}>
                             <motion.div
                                 initial={{ width: 0 }}

@@ -6,8 +6,10 @@ import { FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 import { mockCertifications } from '../data/mockData';
 
 const Certifications = () => {
+    // State to hold certifications data
     const [certifications, setCertifications] = useState([]);
 
+    // Fetch certifications from API with mock data fallback
     useEffect(() => {
         const fetchCerts = async () => {
             try {
@@ -23,6 +25,7 @@ const Certifications = () => {
 
 
 
+    // Helper to help ensure all links are absolute URLs
     const formatUrl = (url) => {
         if (!url) return '';
         if (url.startsWith('http://') || url.startsWith('https://')) return url;

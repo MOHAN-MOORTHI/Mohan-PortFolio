@@ -6,8 +6,10 @@ import Stars from '../components/Stars';
 import { mockAbout } from '../data/mockData';
 
 const Hero = () => {
+    // State to hold hero section data, defaulting to mock data for resilience
     const [heroData, setHeroData] = useState(mockAbout);
 
+    // Fetch dynamic hero data from API
     useEffect(() => {
         const fetchHeroData = async () => {
             try {
@@ -24,7 +26,9 @@ const Hero = () => {
 
     return (
         <section style={{ height: '100vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+            {/* Background 3D Canvas */}
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
+                {/* Optimized Canvas settings for performance */}
                 <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 2]} gl={{ antialias: false }}>
                     <Suspense fallback={null}>
                         <Stars />
@@ -32,6 +36,7 @@ const Hero = () => {
                 </Canvas>
             </div>
 
+            {/* Content Overlay */}
             <div className="content" style={{ textAlign: 'center', zIndex: 1, padding: '0 1rem' }}>
                 <motion.h1
                     initial={{ opacity: 0, y: 50 }}

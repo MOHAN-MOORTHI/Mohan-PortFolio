@@ -9,16 +9,19 @@ const Navbar = () => {
     const location = useLocation();
 
     // Handle scroll effect for navbar background
+    // Changes the background style when user scrolls down
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Smooth scroll to section
+    // Handles both on-page scrolling and cross-page navigation
     const scrollToSection = (id) => {
         setIsOpen(false);
         if (location.pathname !== '/') {
-            // Navigate to home then scroll (logic would be needed in Home to check hash, but for now assuming SPA mostly)
+            // Navigate to home then scroll (since sections are only on Home page)
             window.location.href = `/#${id}`;
         } else {
             const element = document.getElementById(id);

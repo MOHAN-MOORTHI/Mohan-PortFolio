@@ -6,12 +6,17 @@ const User = require('../models/User');
 const Project = require('../models/Project');
 const Skill = require('../models/Skill');
 
-// Middleware to verify token
+// --- Middleware: Verify Token ---
+// Protects routes that require authentication (e.g., creating/deleting projects)
 const auth = (req, res, next) => {
+    // Get token from header
     const token = req.header('x-auth-token');
+
+    // Check if not token
     if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
 
     try {
+        // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();

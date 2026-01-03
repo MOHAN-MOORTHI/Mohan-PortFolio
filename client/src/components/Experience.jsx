@@ -7,6 +7,7 @@ import { mockExperience } from '../data/mockData';
 const Experience = () => {
     const [experiences, setExperiences] = useState([]);
 
+    // Fetch experience data with fallback
     useEffect(() => {
         const fetchExperience = async () => {
             try {
@@ -24,7 +25,7 @@ const Experience = () => {
         <section id="experience" className="section">
             <h2 style={{ textAlign: 'center', marginBottom: '3rem' }}>Experience</h2>
             <div style={{ position: 'relative', maxWidth: '800px', margin: '0 auto' }}>
-                {/* Vertical Line */}
+                {/* Vertical Timeline Line */}
                 <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: '2px', background: 'var(--glass-border)', transform: 'translateX(-50%)' }} />
 
                 {experiences.map((exp, index) => (
@@ -35,12 +36,13 @@ const Experience = () => {
                         transition={{ delay: index * 0.2 }}
                         style={{
                             display: 'flex',
+                            // Alternate Sides for timeline effect
                             justifyContent: index % 2 === 0 ? 'flex-start' : 'flex-end',
                             marginBottom: '2rem',
                             position: 'relative'
                         }}
                     >
-                        {/* Dot on line */}
+                        {/* Dot on timeline */}
                         <div style={{
                             position: 'absolute',
                             left: '50%',
