@@ -9,6 +9,7 @@ const Projects = () => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [visibleCount, setVisibleCount] = useState(3);
 
     // Fetch projects from API, fall back to mock data on error for resilience
     useEffect(() => {
@@ -48,7 +49,7 @@ const Projects = () => {
             </motion.h2>
 
             <div className="grid-cols-3" style={{ gap: '2.5rem' }}>
-                {projects.length === 0 ? <p className="text-center col-span-3">No projects found.</p> : projects.map((project, index) => (
+                {projects.length === 0 ? <p className="text-center col-span-3">No projects found.</p> : projects.slice(0, visibleCount).map((project, index) => (
                     <motion.div
                         key={project._id}
                         initial={{ opacity: 0, y: 50 }}
@@ -169,6 +170,26 @@ const Projects = () => {
                     </motion.div>
                 ))}
             </div>
+
+            {/* Show More / Show Less Button */}
+            {projects.length > 3 && (
+                <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setVisibleCount(visibleCount === 3 ? projects.length : 3)}
+                        className="btn btn-primary"
+                        style={{
+                            padding: '0.8rem 2rem',
+                            fontSize: '1rem',
+                            borderRadius: '30px',
+                            boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)'
+                        }}
+                    >
+                        {visibleCount === 3 ? "View All Projects" : "Show Less"}
+                    </motion.button>
+                </div>
+            )}
         </section>
     );
 };
