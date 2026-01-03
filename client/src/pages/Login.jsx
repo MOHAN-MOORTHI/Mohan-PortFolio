@@ -35,6 +35,7 @@ const Login = () => {
             if (res.success) {
                 navigate('/admin/dashboard');
             } else {
+                console.error("Login failed:", res.error);
                 setError(res.error);
             }
         }
