@@ -21,7 +21,7 @@ function App() {
     return (
         // AuthProvider wraps the app to provide authentication state globally
         <AuthProvider>
-            <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <Router>
                 <div className="App">
                     {/* Toast notifications configuration */}
                     <Toaster position="top-right" toastOptions={{

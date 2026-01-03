@@ -24,8 +24,6 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await axios.post('/api/auth/login', { username, password });
             localStorage.setItem('token', res.data.token);
-            // Immediately set legacy header for subsequent requests in this session
-            axios.defaults.headers.common['x-auth-token'] = res.data.token;
             setToken(res.data.token);
             setUser(res.data.user);
             return { success: true };

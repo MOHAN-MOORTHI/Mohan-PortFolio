@@ -23,25 +23,11 @@ app.use(helmet());
 // Gzip compression for performance
 app.use(compression());
 
-// advanced-security-headers
-const rateLimit = require('express-rate-limit');
-const mongoSanitize = require('express-mongo-sanitize');
-
-// Rate Limiting: Prevent brute-force updates
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
-app.use(limiter);
-
-// Parse JSON bodies (Must be before sanitization)
-app.use(express.json());
-
-// Data Sanitization again NoSQL query injection
-app.use(mongoSanitize());
-
 // Cross-Origin Resource Sharing
 app.use(cors());
+
+// Parse JSON bodies
+app.use(express.json());
 
 // Handle file uploads
 app.use(fileUpload());
