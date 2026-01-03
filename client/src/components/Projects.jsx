@@ -178,15 +178,22 @@ const Projects = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setVisibleCount(visibleCount === 3 ? projects.length : 3)}
-                        className="btn btn-primary"
+                        className="btn"
                         style={{
-                            padding: '0.8rem 2rem',
+                            background: 'transparent',
+                            border: '1px solid var(--primary)',
+                            color: 'var(--primary)',
+                            padding: '0.6rem 1.5rem',
                             fontSize: '1rem',
                             borderRadius: '30px',
-                            boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)'
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s'
                         }}
                     >
-                        {visibleCount === 3 ? "View All Projects" : "Show Less"}
+                        {visibleCount === 3 ? "See More >" : "Show Less <"}
                     </motion.button>
                 </div>
             )}
