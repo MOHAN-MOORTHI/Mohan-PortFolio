@@ -82,6 +82,14 @@ const Login = () => {
                     >
                         {isSetup ? "Login" : "Setup Admin"}
                     </button>
+                    <br />
+                    <button
+                        type="button"
+                        onClick={() => navigate('/')}
+                        style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', marginTop: '1rem', textDecoration: 'none', fontSize: '0.85rem' }}
+                    >
+                        ← Back to Home
+                    </button>
                 </p>
             </form>
         </div>

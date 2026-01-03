@@ -60,6 +60,27 @@ const Dashboard = () => {
                 </motion.button>
             </div>
 
+            <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 100 }}>
+                <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => navigate('/')}
+                    className="btn btn-primary"
+                    style={{
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)'
+                    }}
+                    title="Go to Home"
+                >
+                    🏠
+                </motion.button>
+            </div>
+
             <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '2rem' }}>
                 <aside className="glass-card" style={{ height: 'fit-content', padding: '1rem' }}>
                     <ul style={{ listStyle: 'none' }}>
