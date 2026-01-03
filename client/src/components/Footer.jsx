@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaGithub, FaLinkedin, FaTwitter, FaWhatsapp, FaEnvelope, FaFacebook, FaPhone } from 'react-icons/fa';
+import { mockAbout } from '../data/mockData';
 
 const Footer = () => {
-    const [socials, setSocials] = useState({ github: '', linkedin: '', twitter: '', whatsapp: '', facebook: '', mobile: '', email: '' });
+    const [socials, setSocials] = useState(mockAbout);
 
     useEffect(() => {
         const fetchSocials = async () => {
             try {
                 const res = await axios.get('/api/about');
-                if (res.data) setSocials({
-                    github: res.data.github || '',
-                    linkedin: res.data.linkedin || '',
-                    twitter: res.data.twitter || '',
-                    whatsapp: res.data.whatsapp || '',
-                    facebook: res.data.facebook || '',
-                    mobile: res.data.mobile || '',
-                    email: res.data.email || ''
-                });
+                if (res.data) setSocials(res.data);
             } catch (err) {
-                console.error(err);
+                console.error("Using mock data due to error:", err);
+                // Keep mock data
             }
         };
         fetchSocials();

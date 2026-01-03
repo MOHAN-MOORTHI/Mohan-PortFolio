@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
+import { mockAbout } from '../data/mockData';
+
 const About = () => {
-    const [about, setAbout] = useState({ bio: '', imageUrl: '', resumeUrl: '' });
+    const [about, setAbout] = useState(mockAbout);
 
     useEffect(() => {
         const fetchAbout = async () => {
@@ -11,7 +13,7 @@ const About = () => {
                 const res = await axios.get('/api/about');
                 if (res.data) setAbout(res.data);
             } catch (err) {
-                console.error(err);
+                console.error("Failed to fetch about data, using mock", err);
             }
         };
         fetchAbout();

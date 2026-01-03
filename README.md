@@ -12,6 +12,7 @@ A high-performance, futuristic portfolio website built with the **MERN Stack** (
   - **Framer Motion**: Smooth entry and scroll animations.
   - **Glassmorphism UI**: Modern, transparent design aesthetic.
   - Fully Responsive (Mobile, Tablet, Desktop).
+  - **Resilient Architecture**: Displays fallback content if the backend is unavailable.
 
 - **Backend**:
   - Node.js + Express REST API.

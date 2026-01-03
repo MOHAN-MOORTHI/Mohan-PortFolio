@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 
+import { mockProjects } from '../data/mockData';
+
 const Projects = () => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,8 +16,8 @@ const Projects = () => {
                 setProjects(res.data);
                 setLoading(false);
             } catch (err) {
-                console.error("Failed to fetch projects", err);
-                setError('Failed to load projects. Ensure backend is running.');
+                console.error("Failed to fetch projects, using mock data", err);
+                setProjects(mockProjects);
                 setLoading(false);
             }
         };

@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 
+import { mockCertifications } from '../data/mockData';
+
 const Certifications = () => {
     const [certifications, setCertifications] = useState([]);
 
@@ -12,7 +14,8 @@ const Certifications = () => {
                 const res = await axios.get('/api/certifications');
                 setCertifications(res.data);
             } catch (err) {
-                console.error(err);
+                console.error("Failed to fetch certifications, using mock data", err);
+                setCertifications(mockCertifications);
             }
         };
         fetchCerts();

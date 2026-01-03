@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 
+import { mockSkills } from '../data/mockData';
+
 const Skills = () => {
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -13,7 +15,8 @@ const Skills = () => {
                 setSkills(res.data);
                 setLoading(false);
             } catch (err) {
-                console.error("Failed to fetch skills", err);
+                console.error("Failed to fetch skills, using mock data", err);
+                setSkills(mockSkills);
                 setLoading(false);
             }
         };

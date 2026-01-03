@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
+import { mockExperience } from '../data/mockData';
+
 const Experience = () => {
     const [experiences, setExperiences] = useState([]);
 
@@ -11,7 +13,8 @@ const Experience = () => {
                 const res = await axios.get('/api/experience');
                 setExperiences(res.data);
             } catch (err) {
-                console.error(err);
+                console.error("Failed to fetch experience, using mock data", err);
+                setExperiences(mockExperience);
             }
         };
         fetchExperience();

@@ -3,31 +3,20 @@ import axios from 'axios';
 import { Canvas } from '@react-three/fiber';
 import { motion } from 'framer-motion';
 import Stars from '../components/Stars';
+import { mockAbout } from '../data/mockData';
 
 const Hero = () => {
-    const [heroData, setHeroData] = useState({
-        heroHeadline: "Hi, I'm Mohan",
-        heroSubHeadline: "Full Stack Developer",
-        heroDescription: "Building futuristic, scalable, and responsive web applications with the MERN stack.",
-        viewProjectsBtnText: 'View Projects',
-        contactBtnText: 'Contact Me'
-    });
+    const [heroData, setHeroData] = useState(mockAbout);
 
     useEffect(() => {
         const fetchHeroData = async () => {
             try {
                 const res = await axios.get('/api/about');
                 if (res.data) {
-                    setHeroData({
-                        heroHeadline: res.data.heroHeadline || "Hi, I'm Mohan",
-                        heroSubHeadline: res.data.heroSubHeadline || "Full Stack Developer",
-                        heroDescription: res.data.heroDescription || "Building futuristic, scalable, and responsive web applications with the MERN stack.",
-                        viewProjectsBtnText: res.data.viewProjectsBtnText || 'View Projects',
-                        contactBtnText: res.data.contactBtnText || 'Contact Me'
-                    });
+                    setHeroData(prev => ({ ...prev, ...res.data }));
                 }
             } catch (err) {
-                console.error('Error fetching hero data:', err);
+                console.error('Error fetching hero data, using mock', err);
             }
         };
         fetchHeroData();

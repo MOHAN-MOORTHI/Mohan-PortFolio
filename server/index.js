@@ -11,7 +11,12 @@ const PORT = process.env.PORT || 5000;
 const fileUpload = require('express-fileupload');
 const path = require('path');
 
+const helmet = require('helmet');
+const compression = require('compression');
+
 // Middleware
+app.use(helmet());
+app.use(compression());
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
