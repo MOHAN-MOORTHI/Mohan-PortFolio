@@ -60,7 +60,7 @@ const About = () => {
                             style={{
                                 width: '250px',
                                 height: '250px',
-                                borderRadius: '20px',
+                                borderRadius: '50%',
                                 background: 'linear-gradient(135deg, var(--primary), #a855f7)',
                                 padding: '5px',
                                 boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
@@ -71,7 +71,7 @@ const About = () => {
                             <div style={{
                                 width: '100%',
                                 height: '100%',
-                                borderRadius: '15px',
+                                borderRadius: '50%',
                                 overflow: 'hidden',
                                 position: 'relative',
                                 background: '#1e293b'
