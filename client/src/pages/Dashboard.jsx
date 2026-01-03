@@ -16,8 +16,12 @@ const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('about'); // Changed default to 'about'
 
     const handleLogout = () => {
-        logout();
+        // Navigate to home immediately to unmount the protected AdminRoute
         navigate('/');
+        // Clear auth state with a minimal delay to prevent AdminRoute from forcing a redirect to /admin
+        setTimeout(() => {
+            logout();
+        }, 50);
     };
 
     return (
