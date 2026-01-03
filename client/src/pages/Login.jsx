@@ -8,8 +8,26 @@ const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
     const [error, setError] = useState('');
-    const [isSetup, setIsSetup] = useState(false);
+    const [isSetup, setIsSetup] = useState(false); // Default, will update on load
+    const [loading, setLoading] = useState(true);
     const [success, setSuccess] = useState('');
+
+    // Check if admin exists on load
+    React.useEffect(() => {
+        const checkSetup = async () => {
+            try {
+                const res = await axios.get('/api/auth/init');
+                // If admin exists (true), we are NOT in setup mode. 
+                // If admin does NOT exist (false), we ARE in setup mode.
+                setIsSetup(!res.data.adminExists);
+            } catch (err) {
+                console.error("Failed to check admin status", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkSetup();
+    }, []);
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -35,16 +53,17 @@ const Login = () => {
             if (res.success) {
                 navigate('/admin/dashboard');
             } else {
-                console.error("Login failed:", res.error);
                 setError(res.error);
             }
         }
     };
 
+    if (loading) return <div className="flex-center" style={{ height: '100vh' }}>Loading...</div>;
+
     return (
         <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <form onSubmit={onSubmit} className="glass-card" style={{ width: '100%', maxWidth: '400px' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>{isSetup ? 'Setup Admin' : 'Admin Login'}</h2>
+                <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>{isSetup ? 'Setup Admin Account' : 'Admin Login'}</h2>
                 {error && <p style={{ color: 'red', textAlign: 'center', marginBottom: '1rem' }}>{error}</p>}
                 {success && <p style={{ color: 'green', textAlign: 'center', marginBottom: '1rem' }}>{success}</p>}
 
@@ -74,16 +93,11 @@ const Login = () => {
                     {isSetup ? 'Create Admin' : 'Login'}
                 </button>
 
-                <p style={{ textAlign: 'center', fontSize: '0.9rem', color: '#888' }}>
-                    {isSetup ? "Already have an account?" : "First time setup?"}
-                    <button
-                        type="button"
-                        onClick={() => { setIsSetup(!isSetup); setError(''); }}
-                        style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', marginLeft: '0.5rem', textDecoration: 'underline' }}
-                    >
-                        {isSetup ? "Login" : "Setup Admin"}
-                    </button>
-                </p>
+                {!isSetup && (
+                    <p style={{ textAlign: 'center', fontSize: '0.8rem', color: '#666' }}>
+                        Default: admin / password123
+                    </p>
+                )}
             </form>
         </div>
     );

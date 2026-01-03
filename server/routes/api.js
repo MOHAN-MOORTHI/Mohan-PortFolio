@@ -27,6 +27,16 @@ const auth = (req, res, next) => {
 
 // --- AUTH ROUTES ---
 
+// Check if admin exists (for frontend to decide between Login vs Register)
+router.get('/auth/init', async (req, res) => {
+    try {
+        const userCount = await User.countDocuments();
+        res.json({ adminExists: userCount > 0 });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // Login
 router.post('/auth/login', async (req, res) => {
     const { username, password } = req.body;
