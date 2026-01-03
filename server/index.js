@@ -34,14 +34,14 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+// Parse JSON bodies (Must be before sanitization)
+app.use(express.json());
+
 // Data Sanitization again NoSQL query injection
 app.use(mongoSanitize());
 
 // Cross-Origin Resource Sharing
 app.use(cors());
-
-// Parse JSON bodies
-app.use(express.json());
 
 // Handle file uploads
 app.use(fileUpload());
