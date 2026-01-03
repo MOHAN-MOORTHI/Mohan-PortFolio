@@ -138,20 +138,10 @@ const Projects = () => {
                                         {project.description.length > 80 ? project.description.substring(0, 80) + '...' : project.description}
                                     </p>
 
-                                    {/* Tech Stack Tags */}
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem', flex: 1 }}>
-                                        {project.tags.map((tag, i) => (
-                                            <span key={i} style={{
-                                                fontSize: '0.75rem',
-                                                color: '#94a3b8',
-                                                background: 'rgba(255,255,255,0.05)',
-                                                padding: '0.2rem 0.6rem',
-                                                borderRadius: '12px',
-                                                border: '1px solid rgba(255,255,255,0.1)'
-                                            }}>
-                                                #{tag}
-                                            </span>
-                                        ))}
+                                    {/* Tech Stack Tags - Comma Separated Text */}
+                                    <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '1rem', lineHeight: '1.4' }}>
+                                        <span style={{ color: '#64748b', marginRight: '0.3rem' }}>Stack:</span>
+                                        {project.tags.join(', ')}
                                     </div>
 
                                     <div style={{ paddingTop: '1rem', display: 'flex', gap: '1rem', marginTop: 'auto' }}>
