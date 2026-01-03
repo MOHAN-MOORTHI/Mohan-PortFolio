@@ -27,6 +27,20 @@ const Projects = () => {
         fetchProjects();
     }, []);
 
+    // Auto-play functionality
+    useEffect(() => {
+        if (projects.length <= 3) return; // No auto-play if no slides needed
+
+        const interval = setInterval(() => {
+            setActiveIndex((current) => {
+                const maxIndex = Math.ceil(projects.length / 3) - 1;
+                return current === maxIndex ? 0 : current + 1;
+            });
+        }, 5000); // Change slide every 5 seconds
+
+        return () => clearInterval(interval);
+    }, [projects.length]);
+
     // Helper to format URLs
     const formatUrl = (url) => {
         if (!url) return '';

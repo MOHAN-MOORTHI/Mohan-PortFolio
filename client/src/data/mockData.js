@@ -41,6 +41,15 @@ export const mockProjects = [
         liveUrl: "#",
         githubUrl: "#",
         imageUrl: ""
+    },
+    {
+        _id: "4",
+        title: "DocSpot",
+        description: "A comprehensive document management system for healthcare professionals to organize and track patient records securely.",
+        tags: ["MERN", "Redux", "Material UI"],
+        liveUrl: "#",
+        githubUrl: "#",
+        imageUrl: ""
     }
 ];
 
