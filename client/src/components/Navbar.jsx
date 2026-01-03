@@ -75,11 +75,12 @@ const Navbar = () => {
                             style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.8)', cursor: 'pointer', fontSize: '1rem', fontWeight: 500, transition: 'color 0.3s' }}
                             onMouseOver={(e) => e.target.style.color = '#fff'}
                             onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.8)'}
+                            aria-label={`Scroll to ${item} section`}
                         >
                             {item}
                         </button>
                     ))}
-                    <Link to="/admin" className="btn btn-primary" style={{ padding: '0.5rem 1rem', textDecoration: 'none' }}>Admin</Link>
+                    <Link to="/admin" className="btn btn-primary" style={{ padding: '0.5rem 1rem', textDecoration: 'none' }} aria-label="Admin Login">Admin</Link>
                 </div>
 
                 {/* Mobile Icon */}
