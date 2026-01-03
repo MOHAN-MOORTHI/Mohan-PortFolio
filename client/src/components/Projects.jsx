@@ -126,22 +126,6 @@ const Projects = () => {
                                     />
                                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.6))' }} />
 
-                                    {/* Floating Category Badge on Image */}
-                                    <span style={{
-                                        position: 'absolute',
-                                        bottom: '1rem',
-                                        left: '1rem',
-                                        background: 'rgba(99, 102, 241, 0.9)',
-                                        color: 'white',
-                                        padding: '0.4rem 1rem',
-                                        borderRadius: '20px',
-                                        fontSize: '0.85rem',
-                                        fontWeight: '600',
-                                        backdropFilter: 'blur(4px)',
-                                        boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
-                                    }}>
-                                        {project.tags[0] || 'Project'}
-                                    </span>
                                 </div>
 
                                 {/* Content Section */}
@@ -150,9 +134,25 @@ const Projects = () => {
                                         {project.title}
                                     </h3>
 
-                                    <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: '1.6', flex: 1 }}>
+                                    <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '0.5rem' }}>
                                         {project.description.length > 80 ? project.description.substring(0, 80) + '...' : project.description}
                                     </p>
+
+                                    {/* Tech Stack Tags */}
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem', flex: 1 }}>
+                                        {project.tags.map((tag, i) => (
+                                            <span key={i} style={{
+                                                fontSize: '0.75rem',
+                                                color: '#94a3b8',
+                                                background: 'rgba(255,255,255,0.05)',
+                                                padding: '0.2rem 0.6rem',
+                                                borderRadius: '12px',
+                                                border: '1px solid rgba(255,255,255,0.1)'
+                                            }}>
+                                                #{tag}
+                                            </span>
+                                        ))}
+                                    </div>
 
                                     <div style={{ paddingTop: '1rem', display: 'flex', gap: '1rem', marginTop: 'auto' }}>
                                         {project.liveUrl && (
