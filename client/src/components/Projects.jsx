@@ -57,7 +57,7 @@ const Projects = () => {
                     >
                         <div style={{ height: '200px', background: 'var(--bg-dark)', borderRadius: '8px', marginBottom: '1rem', overflow: 'hidden', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             {project.imageUrl ? (
-                                <img src={project.imageUrl} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <img src={project.imageUrl} alt={project.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             ) : (
                                 <span style={{ color: 'var(--text-muted)' }}>Project Preview</span>
                             )}

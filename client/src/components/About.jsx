@@ -41,6 +41,7 @@ const About = () => {
                         <img
                             src={about.imageUrl || "https://via.placeholder.com/200"}
                             alt="Profile"
+                            loading="lazy"
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                     </motion.div>

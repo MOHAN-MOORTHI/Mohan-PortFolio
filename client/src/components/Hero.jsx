@@ -25,7 +25,7 @@ const Hero = () => {
     return (
         <section style={{ height: '100vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
-                <Canvas camera={{ position: [0, 0, 1] }}>
+                <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 2]} gl={{ antialias: false }}>
                     <Suspense fallback={null}>
                         <Stars />
                     </Suspense>
