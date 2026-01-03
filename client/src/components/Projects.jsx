@@ -9,7 +9,6 @@ const Projects = () => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [visibleCount, setVisibleCount] = useState(3);
 
     // Fetch projects from API, fall back to mock data on error for resilience
     useEffect(() => {
@@ -48,17 +47,41 @@ const Projects = () => {
                 Featured Projects
             </motion.h2>
 
-            <div className="grid-cols-3" style={{ gap: '2.5rem' }}>
-                {projects.length === 0 ? <p className="text-center col-span-3">No projects found.</p> : projects.slice(0, visibleCount).map((project, index) => (
+            {/* Horizontal Scroll Container */}
+            <div
+                className="hide-scrollbar" // Add this class in index.css if not present, or rely on inline styles below
+                style={{
+                    display: 'flex',
+                    overflowX: 'auto',
+                    gap: '2.5rem',
+                    padding: '1rem 0.5rem 3rem 0.5rem', // Extra bottom padding for hover effects
+                    scrollSnapType: 'x mandatory',
+                    WebkitOverflowScrolling: 'touch',
+                    scrollbarWidth: 'none', // Firefox
+                    msOverflowStyle: 'none' // IE/Edge
+                }}
+            >
+                <style>{`
+                    /* Hide scrollbar for Chrome/Safari/Opera */
+                    .hide-scrollbar::-webkit-scrollbar {
+                        display: none;
+                    }
+                `}</style>
+
+                {projects.length === 0 ? <p className="text-center" style={{ width: '100%' }}>No projects found.</p> : projects.map((project, index) => (
                     <motion.div
                         key={project._id}
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                        transition={{ delay: index * 0.15, duration: 0.5 }}
-                        whileHover={{ y: -10 }}
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ delay: index * 0.1, duration: 0.5 }}
+                        whileHover={{ y: -10, scale: 1.02 }}
                         className="glass-card"
                         style={{
+                            minWidth: '350px', // Fixed width for horizontal cards
+                            maxWidth: '350px',
+                            flex: '0 0 auto', // Don't shrink
+                            scrollSnapAlign: 'center', // Center on stop
                             display: 'flex',
                             flexDirection: 'column',
                             padding: 0,
@@ -66,11 +89,12 @@ const Projects = () => {
                             border: '1px solid rgba(255, 255, 255, 0.1)',
                             background: 'rgba(30, 41, 59, 0.7)',
                             backdropFilter: 'blur(10px)',
-                            position: 'relative'
+                            position: 'relative',
+                            boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)'
                         }}
                     >
                         {/* Image Container with Zoom Effect */}
-                        <div style={{ position: 'relative', height: '220px', overflow: 'hidden' }}>
+                        <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
                             <motion.img
                                 src={project.imageUrl || "https://via.placeholder.com/600x400"}
                                 alt={project.title}
@@ -170,33 +194,6 @@ const Projects = () => {
                     </motion.div>
                 ))}
             </div>
-
-            {/* Show More / Show Less Button */}
-            {projects.length > 3 && (
-                <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setVisibleCount(visibleCount === 3 ? projects.length : 3)}
-                        className="btn"
-                        style={{
-                            background: 'transparent',
-                            border: '1px solid var(--primary)',
-                            color: 'var(--primary)',
-                            padding: '0.6rem 1.5rem',
-                            fontSize: '1rem',
-                            borderRadius: '30px',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s'
-                        }}
-                    >
-                        {visibleCount === 3 ? "See More >" : "Show Less <"}
-                    </motion.button>
-                </div>
-            )}
         </section>
     );
 };
