@@ -9,6 +9,7 @@ const Projects = () => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     // Fetch projects from API, fall back to mock data on error for resilience
     useEffect(() => {
@@ -47,152 +48,114 @@ const Projects = () => {
                 Featured Projects
             </motion.h2>
 
-            {/* Horizontal Scroll Container */}
-            <div
-                className="hide-scrollbar" // Add this class in index.css if not present, or rely on inline styles below
-                style={{
-                    display: 'flex',
-                    overflowX: 'auto',
-                    gap: '2.5rem',
-                    padding: '1rem 0.5rem 3rem 0.5rem', // Extra bottom padding for hover effects
-                    scrollSnapType: 'x mandatory',
-                    WebkitOverflowScrolling: 'touch',
-                    scrollbarWidth: 'none', // Firefox
-                    msOverflowStyle: 'none' // IE/Edge
-                }}
-            >
-                <style>{`
-                    /* Hide scrollbar for Chrome/Safari/Opera */
-                    .hide-scrollbar::-webkit-scrollbar {
-                        display: none;
-                    }
-                `}</style>
-
-                {projects.length === 0 ? <p className="text-center" style={{ width: '100%' }}>No projects found.</p> : projects.map((project, index) => (
-                    <motion.div
-                        key={project._id}
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: "-50px" }}
-                        transition={{ delay: index * 0.1, duration: 0.5 }}
-                        whileHover={{ y: -10, scale: 1.02 }}
-                        className="glass-card"
-                        style={{
-                            minWidth: '350px', // Fixed width for horizontal cards
-                            maxWidth: '350px',
-                            flex: '0 0 auto', // Don't shrink
-                            scrollSnapAlign: 'center', // Center on stop
-                            display: 'flex',
-                            flexDirection: 'column',
-                            padding: 0,
-                            overflow: 'hidden',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            background: 'rgba(30, 41, 59, 0.7)',
-                            backdropFilter: 'blur(10px)',
-                            position: 'relative',
-                            boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)'
-                        }}
-                    >
-                        {/* Image Container with Zoom Effect */}
-                        <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
-                            <motion.img
-                                src={project.imageUrl || "https://via.placeholder.com/600x400"}
-                                alt={project.title}
-                                loading="lazy"
-                                whileHover={{ scale: 1.1 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            />
-                            {/* Overlay Gradient */}
-                            <div style={{
-                                position: 'absolute',
-                                top: 0, left: 0, right: 0, bottom: 0,
-                                background: 'linear-gradient(to bottom, transparent 0%, rgba(15, 23, 42, 0.8) 100%)'
-                            }} />
-
-                            {/* Tags Floating on Image */}
-                            <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                                {project.tags.slice(0, 3).map(tag => (
-                                    <span key={tag} style={{
-                                        background: 'rgba(0, 0, 0, 0.6)',
-                                        backdropFilter: 'blur(4px)',
-                                        color: '#fff',
-                                        padding: '0.2rem 0.6rem',
-                                        borderRadius: '20px',
-                                        fontSize: '0.7rem',
-                                        border: '1px solid rgba(255,255,255,0.2)'
-                                    }}>
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Content */}
-                        <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                            <h3 style={{ fontSize: '1.4rem', fontWeight: 'bold', marginBottom: '0.8rem', color: '#fff' }}>
-                                {project.title}
-                            </h3>
-                            <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.5rem', flex: 1 }}>
-                                {project.description.length > 100 ? project.description.substring(0, 100) + '...' : project.description}
-                            </p>
-
-                            <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto' }}>
-                                {project.liveUrl && (
-                                    <a
-                                        href={formatUrl(project.liveUrl)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+            {/* Carousel Container */}
+            <div className="carousel-container" style={{ position: 'relative', overflow: 'hidden', padding: '1rem 0 3rem 0' }}>
+                <motion.div
+                    animate={{ x: `-${activeIndex * 100}%` }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    style={{ display: 'flex', width: `${Math.ceil(projects.length / 3) * 100}%` }}
+                >
+                    {/* Group projects into chunks of 3 for the carousel slides */}
+                    {Array.from({ length: Math.ceil(projects.length / 3) }).map((_, slideIndex) => (
+                        <div key={slideIndex} style={{ display: 'flex', width: '100%', justifyContent: 'space-around', padding: '0 1rem' }}>
+                            {projects.slice(slideIndex * 3, (slideIndex * 3) + 3).map((project) => (
+                                <div key={project._id} style={{ width: '30%', minWidth: '300px' }}>
+                                    <div
+                                        className="glass-card"
                                         style={{
-                                            flex: 1,
-                                            textAlign: 'center',
-                                            padding: '0.6rem',
-                                            borderRadius: '8px',
-                                            background: 'linear-gradient(135deg, var(--primary), #a855f7)',
-                                            color: 'white',
-                                            fontWeight: '600',
-                                            textDecoration: 'none',
-                                            transition: 'transform 0.2s',
-                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-                                        }}
-                                        onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-                                        onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
-                                    >
-                                        Live Demo
-                                    </a>
-                                )}
-                                {project.githubUrl && (
-                                    <a
-                                        href={formatUrl(project.githubUrl)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        style={{
-                                            flex: 1,
-                                            textAlign: 'center',
-                                            padding: '0.6rem',
-                                            borderRadius: '8px',
-                                            border: '1px solid rgba(255,255,255,0.2)',
-                                            color: 'white',
-                                            textDecoration: 'none',
-                                            background: 'rgba(255,255,255,0.05)',
-                                            transition: 'all 0.2s'
-                                        }}
-                                        onMouseOver={e => {
-                                            e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-                                            e.currentTarget.style.transform = 'translateY(-2px)';
-                                        }}
-                                        onMouseOut={e => {
-                                            e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
-                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            padding: 0,
+                                            overflow: 'hidden',
+                                            height: '100%',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                                            background: 'rgba(30, 41, 59, 0.7)',
+                                            backdropFilter: 'blur(10px)',
+                                            borderRadius: '8px'
                                         }}
                                     >
-                                        GitHub
-                                    </a>
-                                )}
-                            </div>
+                                        {/* Image Section - Top Half */}
+                                        <div style={{ height: '220px', overflow: 'hidden', position: 'relative' }}>
+                                            <img
+                                                src={project.imageUrl || "https://via.placeholder.com/600x400"}
+                                                alt={project.title}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                        </div>
+
+                                        {/* Content Section - Bottom Half */}
+                                        <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                                            {/* Badge/Category mimicking the reference */}
+                                            <div>
+                                                <span style={{
+                                                    background: '#3b82f6',
+                                                    color: 'white',
+                                                    padding: '0.3rem 0.8rem',
+                                                    borderRadius: '4px',
+                                                    fontSize: '0.85rem',
+                                                    fontWeight: '600',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.3rem'
+                                                }}>
+                                                    {/* Using first tag as category or default to Project */}
+                                                    🏷️  {project.tags[0] || 'Project'}
+                                                </span>
+                                            </div>
+
+                                            <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', color: 'white', margin: 0 }}>
+                                                {project.title}
+                                            </h3>
+
+                                            <p style={{ color: '#94a3b8', fontSize: '0.95rem', lineHeight: '1.5', flex: 1 }}>
+                                                {project.description.length > 80 ? project.description.substring(0, 80) + '...' : project.description}
+                                            </p>
+
+                                            <div style={{ paddingTop: '1rem', display: 'flex', gap: '1rem' }}>
+                                                {project.liveUrl && (
+                                                    <a href={formatUrl(project.liveUrl)} target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa', textDecoration: 'none', fontWeight: '500' }}>
+                                                        Live Demo →
+                                                    </a>
+                                                )}
+                                                {project.githubUrl && (
+                                                    <a href={formatUrl(project.githubUrl)} target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = 'white'} onMouseOut={e => e.target.style.color = '#94a3b8'}>
+                                                        View Code
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            {/* Filler for last slide if incomplete */}
+                            {projects.slice(slideIndex * 3, (slideIndex * 3) + 3).length < 3 && (
+                                Array.from({ length: 3 - projects.slice(slideIndex * 3, (slideIndex * 3) + 3).length }).map((_, i) => (
+                                    <div key={`filler-${i}`} style={{ width: '30%', minWidth: '300px', opacity: 0 }}></div>
+                                ))
+                            )}
                         </div>
-                    </motion.div>
-                ))}
+                    ))}
+                </motion.div>
+
+                {/* Pagination Dots */}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '0.8rem', marginTop: '2rem' }}>
+                    {Array.from({ length: Math.ceil(projects.length / 3) }).map((_, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => setActiveIndex(idx)}
+                            style={{
+                                width: '12px',
+                                height: '12px',
+                                borderRadius: '50%',
+                                border: 'none',
+                                background: activeIndex === idx ? 'var(--primary)' : 'rgba(255, 255, 255, 0.2)',
+                                cursor: 'pointer',
+                                transition: 'background 0.3s ease'
+                            }}
+                            aria-label={`Go to slide ${idx + 1}`}
+                        />
+                    ))}
+                </div>
             </div>
         </section>
     );
