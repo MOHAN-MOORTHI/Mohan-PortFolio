@@ -47,34 +47,124 @@ const Projects = () => {
                 Featured Projects
             </motion.h2>
 
-            <div className="grid-cols-3">
+            <div className="grid-cols-3" style={{ gap: '2.5rem' }}>
                 {projects.length === 0 ? <p className="text-center col-span-3">No projects found.</p> : projects.map((project, index) => (
                     <motion.div
                         key={project._id}
-                        className="glass-card"
                         initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 }}
-                        style={{ display: 'flex', flexDirection: 'column' }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ delay: index * 0.15, duration: 0.5 }}
+                        whileHover={{ y: -10 }}
+                        className="glass-card"
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            padding: 0,
+                            overflow: 'hidden',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            background: 'rgba(30, 41, 59, 0.7)',
+                            backdropFilter: 'blur(10px)',
+                            position: 'relative'
+                        }}
                     >
-                        <div style={{ height: '200px', background: 'var(--bg-dark)', borderRadius: '8px', marginBottom: '1rem', overflow: 'hidden', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            {project.imageUrl ? (
-                                <img src={project.imageUrl} alt={project.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                            ) : (
-                                <span style={{ color: 'var(--text-muted)' }}>Project Preview</span>
-                            )}
+                        {/* Image Container with Zoom Effect */}
+                        <div style={{ position: 'relative', height: '220px', overflow: 'hidden' }}>
+                            <motion.img
+                                src={project.imageUrl || "https://via.placeholder.com/600x400"}
+                                alt={project.title}
+                                loading="lazy"
+                                whileHover={{ scale: 1.1 }}
+                                transition={{ duration: 0.5 }}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                            {/* Overlay Gradient */}
+                            <div style={{
+                                position: 'absolute',
+                                top: 0, left: 0, right: 0, bottom: 0,
+                                background: 'linear-gradient(to bottom, transparent 0%, rgba(15, 23, 42, 0.8) 100%)'
+                            }} />
+
+                            {/* Tags Floating on Image */}
+                            <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                                {project.tags.slice(0, 3).map(tag => (
+                                    <span key={tag} style={{
+                                        background: 'rgba(0, 0, 0, 0.6)',
+                                        backdropFilter: 'blur(4px)',
+                                        color: '#fff',
+                                        padding: '0.2rem 0.6rem',
+                                        borderRadius: '20px',
+                                        fontSize: '0.7rem',
+                                        border: '1px solid rgba(255,255,255,0.2)'
+                                    }}>
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{project.title}</h3>
-                        <p style={{ flex: 1 }}>{project.description}</p>
-                        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
-                            {project.tags.map(tag => (
-                                <span key={tag} style={{ background: 'rgba(99, 102, 241, 0.2)', color: 'var(--primary)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem' }}>{tag}</span>
-                            ))}
-                        </div>
-                        <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto' }}>
-                            {project.liveUrl && <a href={formatUrl(project.liveUrl)} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ flex: 1, textAlign: 'center', padding: '0.5rem' }}>Live</a>}
-                            {project.githubUrl && <a href={formatUrl(project.githubUrl)} target="_blank" rel="noopener noreferrer" className="btn" style={{ flex: 1, textAlign: 'center', border: '1px solid var(--primary)', padding: '0.5rem' }}>Code</a>}
+
+                        {/* Content */}
+                        <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                            <h3 style={{ fontSize: '1.4rem', fontWeight: 'bold', marginBottom: '0.8rem', color: '#fff' }}>
+                                {project.title}
+                            </h3>
+                            <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.5rem', flex: 1 }}>
+                                {project.description.length > 100 ? project.description.substring(0, 100) + '...' : project.description}
+                            </p>
+
+                            <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto' }}>
+                                {project.liveUrl && (
+                                    <a
+                                        href={formatUrl(project.liveUrl)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            flex: 1,
+                                            textAlign: 'center',
+                                            padding: '0.6rem',
+                                            borderRadius: '8px',
+                                            background: 'linear-gradient(135deg, var(--primary), #a855f7)',
+                                            color: 'white',
+                                            fontWeight: '600',
+                                            textDecoration: 'none',
+                                            transition: 'transform 0.2s',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+                                        }}
+                                        onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                                        onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
+                                    >
+                                        Live Demo
+                                    </a>
+                                )}
+                                {project.githubUrl && (
+                                    <a
+                                        href={formatUrl(project.githubUrl)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            flex: 1,
+                                            textAlign: 'center',
+                                            padding: '0.6rem',
+                                            borderRadius: '8px',
+                                            border: '1px solid rgba(255,255,255,0.2)',
+                                            color: 'white',
+                                            textDecoration: 'none',
+                                            background: 'rgba(255,255,255,0.05)',
+                                            transition: 'all 0.2s'
+                                        }}
+                                        onMouseOver={e => {
+                                            e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                        }}
+                                        onMouseOut={e => {
+                                            e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                        }}
+                                    >
+                                        GitHub
+                                    </a>
+                                )}
+                            </div>
                         </div>
                     </motion.div>
                 ))}
