@@ -99,8 +99,9 @@ const Projects = () => {
                 >
                     {extendedProjects.map((project, index) => (
                         <div key={`${project._id}-${index}`} style={{ width: `${100 / extendedProjects.length}%`, padding: '0 1rem' }}>
-                            <div
+                            <motion.div
                                 className="glass-card"
+                                whileHover={{ y: -10 }}
                                 style={{
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -108,62 +109,92 @@ const Projects = () => {
                                     overflow: 'hidden',
                                     height: '100%',
                                     border: '1px solid rgba(255, 255, 255, 0.1)',
-                                    background: 'rgba(30, 41, 59, 0.7)',
+                                    background: 'linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.8))',
                                     backdropFilter: 'blur(10px)',
-                                    borderRadius: '8px'
+                                    borderRadius: '16px',
+                                    boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)'
                                 }}
                             >
-                                {/* Image Section - Top Half */}
+                                {/* Image Section with Zoom */}
                                 <div style={{ height: '220px', overflow: 'hidden', position: 'relative' }}>
-                                    <img
+                                    <motion.img
                                         src={project.imageUrl || "https://via.placeholder.com/600x400"}
                                         alt={project.title}
+                                        whileHover={{ scale: 1.1 }}
+                                        transition={{ duration: 0.5 }}
                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                     />
+                                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.6))' }} />
+
+                                    {/* Floating Category Badge on Image */}
+                                    <span style={{
+                                        position: 'absolute',
+                                        bottom: '1rem',
+                                        left: '1rem',
+                                        background: 'rgba(99, 102, 241, 0.9)',
+                                        color: 'white',
+                                        padding: '0.4rem 1rem',
+                                        borderRadius: '20px',
+                                        fontSize: '0.85rem',
+                                        fontWeight: '600',
+                                        backdropFilter: 'blur(4px)',
+                                        boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
+                                    }}>
+                                        {project.tags[0] || 'Project'}
+                                    </span>
                                 </div>
 
-                                {/* Content Section - Bottom Half */}
+                                {/* Content Section */}
                                 <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                                    {/* Badge/Category mimicking the reference */}
-                                    <div>
-                                        <span style={{
-                                            background: '#3b82f6',
-                                            color: 'white',
-                                            padding: '0.3rem 0.8rem',
-                                            borderRadius: '4px',
-                                            fontSize: '0.85rem',
-                                            fontWeight: '600',
-                                            display: 'inline-flex',
-                                            alignItems: 'center',
-                                            gap: '0.3rem'
-                                        }}>
-                                            {/* Using first tag as category or default to Project */}
-                                            🏷️  {project.tags[0] || 'Project'}
-                                        </span>
-                                    </div>
-
-                                    <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', color: 'white', margin: 0 }}>
+                                    <h3 style={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'white', margin: 0, letterSpacing: '0.5px' }}>
                                         {project.title}
                                     </h3>
 
-                                    <p style={{ color: '#94a3b8', fontSize: '0.95rem', lineHeight: '1.5', flex: 1 }}>
+                                    <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: '1.6', flex: 1 }}>
                                         {project.description.length > 80 ? project.description.substring(0, 80) + '...' : project.description}
                                     </p>
 
-                                    <div style={{ paddingTop: '1rem', display: 'flex', gap: '1rem' }}>
+                                    <div style={{ paddingTop: '1rem', display: 'flex', gap: '1rem', marginTop: 'auto' }}>
                                         {project.liveUrl && (
-                                            <a href={formatUrl(project.liveUrl)} target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa', textDecoration: 'none', fontWeight: '500' }}>
-                                                Live Demo →
+                                            <a
+                                                href={formatUrl(project.liveUrl)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="btn btn-primary"
+                                                style={{
+                                                    flex: 1,
+                                                    textAlign: 'center',
+                                                    padding: '0.6rem',
+                                                    fontSize: '0.9rem',
+                                                    textDecoration: 'none'
+                                                }}
+                                            >
+                                                Live Demo
                                             </a>
                                         )}
                                         {project.githubUrl && (
-                                            <a href={formatUrl(project.githubUrl)} target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = 'white'} onMouseOut={e => e.target.style.color = '#94a3b8'}>
-                                                View Code
+                                            <a
+                                                href={formatUrl(project.githubUrl)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="btn"
+                                                style={{
+                                                    flex: 1,
+                                                    textAlign: 'center',
+                                                    padding: '0.6rem',
+                                                    border: '1px solid rgba(255,255,255,0.2)',
+                                                    background: 'rgba(255,255,255,0.05)',
+                                                    color: 'white',
+                                                    textDecoration: 'none',
+                                                    fontSize: '0.9rem'
+                                                }}
+                                            >
+                                                Code
                                             </a>
                                         )}
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         </div>
                     ))}
                 </div>
