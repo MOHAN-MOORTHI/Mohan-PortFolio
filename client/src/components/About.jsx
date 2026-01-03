@@ -37,19 +37,64 @@ const About = () => {
 
                 <div className="flex-center" style={{ gap: '2rem', flexWrap: 'wrap' }}>
                     {/* Profile Image with performance optimization */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        style={{ width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', border: '4px solid var(--primary)' }}
-                    >
-                        <img
-                            src={about.imageUrl || "https://via.placeholder.com/200"}
-                            alt="Profile"
-                            loading="lazy" // Lazy load image for performance
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                    </motion.div>
+                    {/* Profile Image with 3D Float & Hover Effect */}
+                    <div style={{ perspective: '1000px' }}>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.5, rotateX: 20 }}
+                            whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
+                            viewport={{ once: true }}
+                            animate={{
+                                y: [0, -15, 0],
+                            }}
+                            transition={{
+                                duration: 6,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                            }}
+                            whileHover={{
+                                scale: 1.1,
+                                rotateY: 10,
+                                rotateX: -10,
+                                boxShadow: "0px 0px 40px rgba(99, 102, 241, 0.6)"
+                            }}
+                            style={{
+                                width: '250px',
+                                height: '250px',
+                                borderRadius: '20px',
+                                background: 'linear-gradient(135deg, var(--primary), #a855f7)',
+                                padding: '5px',
+                                boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+                                cursor: 'grab',
+                                transformStyle: 'preserve-3d'
+                            }}
+                        >
+                            <div style={{
+                                width: '100%',
+                                height: '100%',
+                                borderRadius: '15px',
+                                overflow: 'hidden',
+                                position: 'relative',
+                                background: '#1e293b'
+                            }}>
+                                <img
+                                    src={about.imageUrl || "https://via.placeholder.com/200"}
+                                    alt="Profile"
+                                    loading="lazy"
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                />
+                                {/* Shine Effect Overlay */}
+                                <div style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    background: 'linear-gradient(120deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 70%)',
+                                    pointerEvents: 'none'
+                                }} />
+                            </div>
+                        </motion.div>
+                    </div>
 
                     {/* Bio Content */}
                     <motion.div
