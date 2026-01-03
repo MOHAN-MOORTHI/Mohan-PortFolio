@@ -86,9 +86,31 @@ const Login = () => {
                     <button
                         type="button"
                         onClick={() => navigate('/')}
-                        style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', marginTop: '1rem', textDecoration: 'none', fontSize: '0.85rem' }}
+                        style={{
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            border: '1px solid var(--glass-border)',
+                            color: 'var(--text-main)',
+                            cursor: 'pointer',
+                            marginTop: '1.5rem',
+                            textDecoration: 'none',
+                            fontSize: '0.9rem',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '20px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            transition: 'all 0.3s ease'
+                        }}
+                        onMouseOver={(e) => {
+                            e.currentTarget.style.background = 'rgba(99, 102, 241, 0.2)';
+                            e.currentTarget.style.borderColor = 'var(--primary)';
+                        }}
+                        onMouseOut={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                            e.currentTarget.style.borderColor = 'var(--glass-border)';
+                        }}
                     >
-                        ← Back to Home
+                        <span>🏠</span> Back to Home
                     </button>
                 </p>
             </form>
