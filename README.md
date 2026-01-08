@@ -1,6 +1,6 @@
 # High-End MERN Portfolio
 
-A fully dynamic, full-stack portfolio application featuring a 3D antigravity hero section, comprehensive admin dashboard, and modern responsive design.
+A fully dynamic, full-stack portfolio application featuring a 3D interactive physics-based hero section, comprehensive admin dashboard, and modern responsive design.
 
 ## Tech Stack
 
@@ -115,4 +115,10 @@ This project is configured to be deployed as a **monolith** (Frontend + Backend 
 
 3.  **Deploy**:
     Connect your repository to the hosting provider and trigger a deploy. The `build` script will handle installing dependencies and building the React app.
+
+## Author
+
+**Created by Mohan**
+
+A complete Personal Portfolio solution built to showcase skills and projects professionally.
 
