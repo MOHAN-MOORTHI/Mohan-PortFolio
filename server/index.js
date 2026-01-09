@@ -56,7 +56,7 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/upload', uploadRoutes);
 
 // Handle React routing, return all other requests to React app
-app.get('*', (req, res) => {
+app.get(/(.*)/, (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 

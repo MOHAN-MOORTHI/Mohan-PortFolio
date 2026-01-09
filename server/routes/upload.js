@@ -2,36 +2,61 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+require('dotenv').config();
 
-// Configure Multer Storage
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../uploads/'));
-    },
-    filename: function (req, file, cb) {
-        // Create unique filename: fieldname-timestamp.ext
-        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
-    }
-});
+let upload;
 
-// File Filter (Images only)
-const fileFilter = (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|webp|gif/;
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = filetypes.test(file.mimetype);
+// Check if Cloudinary credentials are provided
+if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+    cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET
+    });
 
-    if (extname && mimetype) {
-        cb(null, true);
-    } else {
-        cb(new Error('Images only (jpeg, jpg, png, webp, gif)!'), false);
-    }
-};
+    const storage = new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            folder: 'portfolio_uploads',
+            allowed_formats: ['jpg', 'png', 'jpeg', 'webp', 'gif'],
+        },
+    });
 
-const upload = multer({ 
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
-});
+    upload = multer({ storage: storage });
+    console.log('Using Cloudinary Storage for uploads');
+} else {
+    // Fallback to Disk Storage (Local)
+    // Note: Local storage will not persist on serverless platforms like Vercel
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, path.join(__dirname, '../uploads/'));
+        },
+        filename: function (req, file, cb) {
+            cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+        }
+    });
+
+    const fileFilter = (req, file, cb) => {
+        const filetypes = /jpeg|jpg|png|webp|gif/;
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = filetypes.test(file.mimetype);
+
+        if (extname && mimetype) {
+            cb(null, true);
+        } else {
+            cb(new Error('Images only (jpeg, jpg, png, webp, gif)!'), false);
+        }
+    };
+
+    upload = multer({
+        storage: storage,
+        fileFilter: fileFilter,
+        limits: { fileSize: 5 * 1024 * 1024 }
+    });
+    console.log('Using Local Disk Storage for uploads');
+}
 
 // Upload Route
 router.post('/', upload.single('image'), (req, res) => {
@@ -39,10 +64,19 @@ router.post('/', upload.single('image'), (req, res) => {
         if (!req.file) {
             return res.status(400).json({ message: 'No file uploaded' });
         }
-        // Return the path relative to the server
-        const imagePath = `/uploads/${req.file.filename}`; 
+
+        let imagePath;
+        // Check if file path is a remote URL (Cloudinary) or local path
+        if (req.file.path && (req.file.path.startsWith('http') || req.file.path.startsWith('https'))) {
+            imagePath = req.file.path;
+        } else {
+            // Local path - relative to server
+            imagePath = `/uploads/${req.file.filename}`;
+        }
+
         res.json({ imagePath });
     } catch (err) {
+        console.error('Upload Error:', err);
         res.status(500).json({ message: err.message });
     }
 });
