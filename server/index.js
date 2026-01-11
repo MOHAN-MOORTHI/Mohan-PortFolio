@@ -25,14 +25,21 @@ let isDbConnected = false;
 
 const connectDB = async () => {
   try {
-    const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio_db';
+    const isProduction = process.env.NODE_ENV === 'production';
+    const hasMongoUri = !!process.env.MONGO_URI;
 
-    // Log warning if using localhost in production
-    if (process.env.NODE_ENV === 'production' && !process.env.MONGO_URI) {
-      console.warn('⚠️ WARNING: MONGO_URI is not set. Using localhost (will fail on Vercel).');
+    if (isProduction && !hasMongoUri) {
+      console.warn('⚠️ SKIPPING DB CONNECTION: MONGO_URI is missing in Vercel/Production.');
+      console.warn('Please add MONGO_URI to Vercel Environment Variables.');
+      return; // Stop here. Do not try localhost.
     }
 
-    await mongoose.connect(uri);
+    const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio_db';
+
+    await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: 5000 // Fail fast if connection hangs
+    });
+
     isDbConnected = true;
     console.log('MongoDB Connected');
   } catch (err) {
