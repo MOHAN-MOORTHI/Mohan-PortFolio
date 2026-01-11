@@ -122,3 +122,21 @@ This project is configured to be deployed as a **monolith** (Frontend + Backend 
 
 A complete Personal Portfolio solution built to showcase skills and projects professionally.
 
+
+## Vercel Deployment Troubleshooting
+
+If you encounter **500 Internal Server Errors** or **Login Issues** after deploying to Vercel:
+
+1.  **Environment Variables**:
+    Ensure you have manually added the following in Vercel Settings:
+    - `MONGO_URI`: Connection string to MongoDB Atlas.
+    - `JWT_SECRET`: Random string for security.
+    - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` for image uploads.
+
+2.  **MongoDB Network Access**:
+    In MongoDB Atlas > Network Access, add IP `0.0.0.0/0` to allow Vercel's dynamic IPs to connect.
+
+3.  **Admin User**:
+    Users from localhost are not transferred. Create an admin user on production using a tool like Postman:
+    `POST https://your-site.vercel.app/api/auth/register`
+    Body: `{"username": "admin", "password": "..."}`
