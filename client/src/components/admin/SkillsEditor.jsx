@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 const SkillsEditor = ({ token }) => {
     const [skills, setSkills] = useState([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const [newSkill, setNewSkill] = useState({ name: '', category: 'Frontend', level: 80, icon: '' });
     const fileInputRef = useRef(null);
 
@@ -41,6 +43,8 @@ const SkillsEditor = ({ token }) => {
 
     const handleAddSkill = async (e) => {
         e.preventDefault();
+        if (isSubmitting) return;
+        setIsSubmitting(true);
         try {
             const res = await fetch('/api/skills', {
                 method: 'POST',
@@ -59,6 +63,8 @@ const SkillsEditor = ({ token }) => {
             }
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -87,6 +93,7 @@ const SkillsEditor = ({ token }) => {
             <div className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-xl">
                 <h2 className="text-2xl font-bold mb-6 text-white">Add New Skill</h2>
                 <form onSubmit={handleAddSkill} className="flex flex-wrap gap-4 items-end">
+                    {/* ... inputs ... */}
                     <div className="flex-1 min-w-[200px]">
                         <label className="block text-gray-400 mb-2">Skill Name</label>
                         <input
@@ -135,8 +142,12 @@ const SkillsEditor = ({ token }) => {
                             />
                         </div>
                     </div>
-                    <button type="submit" className="bg-secondary text-dark-bg font-bold px-6 py-3 rounded-lg hover:bg-cyan-400 transition-colors shadow-lg shadow-cyan-500/20">
-                        Add
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`bg-secondary text-dark-bg font-bold px-6 py-3 rounded-lg hover:bg-cyan-400 transition-colors shadow-lg shadow-cyan-500/20 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                        {isSubmitting ? 'Adding...' : 'Add'}
                     </button>
                 </form>
             </div>
