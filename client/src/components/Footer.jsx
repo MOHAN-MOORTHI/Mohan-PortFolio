@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
     const [socials, setSocials] = useState({});
@@ -26,6 +26,7 @@ const Footer = () => {
                         {socials.twitter && socials.twitter !== '#' && <a href={socials.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors text-xl"><FaTwitter /></a>}
                         {socials.instagram && socials.instagram !== '#' && <a href={socials.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors text-xl"><FaInstagram /></a>}
                         {socials.whatsapp && socials.whatsapp !== '#' && <a href={socials.whatsapp} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors text-xl"><FaWhatsapp /></a>}
+                        {socials.email && socials.email !== '#' && <a href={socials.email} className="text-gray-400 hover:text-white transition-colors text-xl"><FaEnvelope /></a>}
                     </div>
                 </div>
             </div>

@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaHome, FaUser, FaCode, FaCertificate, FaBriefcase, FaEnvelope, FaLayerGroup } from 'react-icons/fa';
+import { FaSignOutAlt, FaHome, FaUser, FaCode, FaCertificate, FaBriefcase, FaEnvelope, FaLayerGroup, FaLink } from 'react-icons/fa';
 import HeroEditor from '../components/admin/HeroEditor';
 import AboutEditor from '../components/admin/AboutEditor';
 import SkillsEditor from '../components/admin/SkillsEditor';
 import CertificationsEditor from '../components/admin/CertificationsEditor';
 import ContactViewer from '../components/admin/ContactViewer';
-
-// ... imports
 import ExperienceEditor from '../components/admin/ExperienceEditor';
 import ProjectsEditor from '../components/admin/ProjectsEditor';
+import FooterEditor from '../components/admin/FooterEditor';
 
 const AdminDashboard = () => {
-    // ... existing AdminDashboard code ...
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const [activeTab, setActiveTab] = useState('projects');
@@ -35,6 +33,7 @@ const AdminDashboard = () => {
         { id: 'experience', label: 'Experience', icon: <FaBriefcase /> },
         { id: 'certifications', label: 'Certifications', icon: <FaCertificate /> },
         { id: 'projects', label: 'Projects', icon: <FaLayerGroup /> },
+        { id: 'footer', label: 'Footer Section', icon: <FaLink /> },
         { id: 'contact', label: 'Contact Msgs', icon: <FaEnvelope /> },
     ];
 
@@ -46,6 +45,7 @@ const AdminDashboard = () => {
             case 'experience': return <ExperienceEditor token={token} />;
             case 'certifications': return <CertificationsEditor token={token} />;
             case 'projects': return <ProjectsEditor token={token} />;
+            case 'footer': return <FooterEditor token={token} />;
             case 'contact': return <ContactViewer token={token} />;
             default: return <div className="text-white">Select a tab</div>;
         }

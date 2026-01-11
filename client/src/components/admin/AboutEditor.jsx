@@ -150,6 +150,15 @@ const AboutEditor = ({ token }) => {
                             className="w-full bg-dark-bg border border-white/10 rounded-lg p-3 text-white focus:border-secondary focus:outline-none"
                         />
                     </div>
+                    <div>
+                        <label className="block text-gray-400 mb-2">Email (mailto: link)</label>
+                        <input
+                            value={aboutData.socialLinks?.email || ''}
+                            onChange={e => setAboutData({ ...aboutData, socialLinks: { ...aboutData.socialLinks, email: e.target.value } })}
+                            className="w-full bg-dark-bg border border-white/10 rounded-lg p-3 text-white focus:border-secondary focus:outline-none"
+                            placeholder="mailto:you@example.com"
+                        />
+                    </div>
                 </div>
                 <button type="submit" className="w-full bg-secondary text-dark-bg font-bold py-3 rounded-lg hover:bg-cyan-400 transition-colors shadow-lg shadow-cyan-500/20">
                     Update About Section

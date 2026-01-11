@@ -9,7 +9,8 @@ const aboutSchema = new mongoose.Schema({
         linkedin: { type: String, default: '#' },
         twitter: { type: String, default: '#' },
         instagram: { type: String, default: '#' },
-        whatsapp: { type: String, default: '#' }
+        whatsapp: { type: String, default: '#' },
+        email: { type: String, default: '#' }
     }
 }, { timestamps: true });
 

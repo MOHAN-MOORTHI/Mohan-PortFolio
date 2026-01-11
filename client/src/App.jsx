@@ -1,9 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import AdminDashboard from './pages/AdminDashboard';
-import Login from './pages/Login';
+import { lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Loading from './components/Loading';
+
+// Lazy load pages for better performance
+const Home = lazy(() => import('./pages/Home'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const Login = lazy(() => import('./pages/Login'));
 
 function App() {
   return (
@@ -11,11 +15,13 @@ function App() {
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Suspense>
         </main>
         <Footer />
       </div>
