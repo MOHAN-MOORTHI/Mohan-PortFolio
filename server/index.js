@@ -20,16 +20,47 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // DB Connection
+// DB Connection State
+let isDbConnected = false;
+
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio_db');
+    const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio_db';
+
+    // Log warning if using localhost in production
+    if (process.env.NODE_ENV === 'production' && !process.env.MONGO_URI) {
+      console.warn('⚠️ WARNING: MONGO_URI is not set. Using localhost (will fail on Vercel).');
+    }
+
+    await mongoose.connect(uri);
+    isDbConnected = true;
     console.log('MongoDB Connected');
   } catch (err) {
     console.error('MongoDB Connection Error:', err);
-    process.exit(1);
+    isDbConnected = false;
+    // Do NOT process.exit(1) in serverless environments
   }
 };
 connectDB();
+
+// Health/Status Check Route (For debugging Vercel deployment)
+app.get('/api/status', (req, res) => {
+  res.json({
+    server: 'running',
+    message: 'Backend is active',
+    database: {
+      connected: isDbConnected,
+      readyState: mongoose.connection.readyState // 0: disconnected, 1: connected, 2: connecting, 3: disconnecting
+    },
+    environment: {
+      nodeEnv: process.env.NODE_ENV || 'development',
+      hasMongoUri: !!process.env.MONGO_URI,
+      hasJwtSecret: !!process.env.JWT_SECRET,
+      hasCloudinary: !!process.env.CLOUDINARY_CLOUD_NAME
+    },
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Routes
 const apiRoutes = require('./routes/api');
