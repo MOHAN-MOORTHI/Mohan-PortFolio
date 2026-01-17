@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
+import adminService from '../../services/adminService';
 
-const HeroEditor = ({ token }) => {
+const HeroEditor = () => {
     const [heroData, setHeroData] = useState({ title: '', subtitle: '', ctaText: '' });
 
     useEffect(() => {
-        fetch('/api/hero', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-            .then(res => res.json())
-            .then(data => {
+        adminService.getHeroFn()
+            .then(res => {
+                const data = res.data;
                 if (data) setHeroData({
                     title: data.title || '',
                     subtitle: data.subtitle || '',
@@ -16,26 +15,16 @@ const HeroEditor = ({ token }) => {
                 });
             })
             .catch(err => console.error(err));
-    }, [token]);
+    }, []);
 
     const handleUpdateHero = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/hero', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(heroData)
-            });
-            if (res.ok) {
-                alert('Hero section updated!');
-            } else {
-                alert('Failed to update hero section');
-            }
+            await adminService.updateHeroFn(heroData);
+            alert('Hero section updated!');
         } catch (error) {
             console.error(error);
+            alert('Failed to update hero section');
         }
     };
 

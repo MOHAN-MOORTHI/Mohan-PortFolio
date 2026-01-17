@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import adminService from '../../services/adminService';
 
-const SkillsEditor = ({ token }) => {
+const SkillsEditor = () => {
     const [skills, setSkills] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -8,10 +9,9 @@ const SkillsEditor = ({ token }) => {
     const fileInputRef = useRef(null);
 
     const fetchSkills = useCallback(() => {
-        fetch('/api/skills')
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) setSkills(data);
+        adminService.getSkillsFn()
+            .then(res => {
+                if (Array.isArray(res.data)) setSkills(res.data);
             })
             .catch(err => console.error(err));
     }, []);
@@ -28,13 +28,9 @@ const SkillsEditor = ({ token }) => {
         formData.append('image', file);
 
         try {
-            const res = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await res.json();
-            if (data.imagePath) {
-                setNewSkill({ ...newSkill, icon: data.imagePath });
+            const res = await adminService.uploadImageFn(formData);
+            if (res.data.imagePath) {
+                setNewSkill({ ...newSkill, icon: res.data.imagePath });
             }
         } catch (error) {
             console.error('Upload failed', error);
@@ -46,23 +42,13 @@ const SkillsEditor = ({ token }) => {
         if (isSubmitting) return;
         setIsSubmitting(true);
         try {
-            const res = await fetch('/api/skills', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(newSkill)
-            });
-            if (res.ok) {
-                fetchSkills();
-                setNewSkill({ name: '', category: 'Frontend', level: 80, icon: '' });
-                alert('Skill added!');
-            } else {
-                alert('Failed to add skill');
-            }
+            await adminService.addSkillFn(newSkill);
+            fetchSkills();
+            setNewSkill({ name: '', category: 'Frontend', level: 80, icon: '' });
+            alert('Skill added!');
         } catch (error) {
             console.error(error);
+            alert('Failed to add skill');
         } finally {
             setIsSubmitting(false);
         }
@@ -71,19 +57,11 @@ const SkillsEditor = ({ token }) => {
     const handleDeleteSkill = async (id) => {
         if (!window.confirm('Are you sure?')) return;
         try {
-            const res = await fetch(`/api/skills/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (res.ok) {
-                fetchSkills();
-            } else {
-                alert('Failed to delete skill');
-            }
+            await adminService.deleteSkillFn(id);
+            fetchSkills();
         } catch (error) {
             console.error(error);
+            alert('Failed to delete skill');
         }
     };
 

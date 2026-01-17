@@ -1,18 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
+import adminService from '../../services/adminService';
 
-const ContactViewer = ({ token }) => {
+const ContactViewer = () => {
     const [messages, setMessages] = useState([]);
 
     const fetchMessages = useCallback(() => {
-        fetch('/api/contact', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) setMessages(data);
+        adminService.getMessagesFn()
+            .then(res => {
+                if (Array.isArray(res.data)) setMessages(res.data);
             })
             .catch(err => console.error(err));
-    }, [token]);
+    }, []);
 
     useEffect(() => {
         fetchMessages();
@@ -21,19 +19,11 @@ const ContactViewer = ({ token }) => {
     const handleDeleteMessage = async (id) => {
         if (!window.confirm('Are you sure you want to delete this message?')) return;
         try {
-            const res = await fetch(`/api/contact/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (res.ok) {
-                fetchMessages();
-            } else {
-                alert('Failed to delete message');
-            }
+            await adminService.deleteMessageFn(id);
+            fetchMessages();
         } catch (error) {
             console.error(error);
+            alert('Failed to delete message');
         }
     };
 

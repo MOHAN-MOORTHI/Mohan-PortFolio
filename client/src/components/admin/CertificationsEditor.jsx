@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import adminService from '../../services/adminService';
 
-const CertificationsEditor = ({ token }) => {
+const CertificationsEditor = () => {
     const [certifications, setCertifications] = useState([]);
     const [newCert, setNewCert] = useState({ title: '', issuer: '', date: '', image: '', link: '' });
     const fileInputRef = useRef(null);
 
     const fetchCertifications = useCallback(() => {
-        fetch('/api/certifications')
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) setCertifications(data);
+        adminService.getCertificationsFn()
+            .then(res => {
+                if (Array.isArray(res.data)) setCertifications(res.data);
             })
             .catch(err => console.error(err));
     }, []);
@@ -26,13 +26,9 @@ const CertificationsEditor = ({ token }) => {
         formData.append('image', file);
 
         try {
-            const res = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await res.json();
-            if (data.imagePath) {
-                setNewCert({ ...newCert, image: data.imagePath });
+            const res = await adminService.uploadImageFn(formData);
+            if (res.data.imagePath) {
+                setNewCert({ ...newCert, image: res.data.imagePath });
             }
         } catch (error) {
             console.error('Upload failed', error);
@@ -42,42 +38,24 @@ const CertificationsEditor = ({ token }) => {
     const handleAddCert = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/certifications', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(newCert)
-            });
-            if (res.ok) {
-                fetchCertifications();
-                setNewCert({ title: '', issuer: '', date: '', image: '', link: '' });
-                alert('Certification added!');
-            } else {
-                alert('Failed to add certification');
-            }
+            await adminService.addCertificationFn(newCert);
+            fetchCertifications();
+            setNewCert({ title: '', issuer: '', date: '', image: '', link: '' });
+            alert('Certification added!');
         } catch (error) {
             console.error(error);
+            alert('Failed to add certification');
         }
     };
 
     const handleDeleteCert = async (id) => {
         if (!window.confirm('Are you sure?')) return;
         try {
-            const res = await fetch(`/api/certifications/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (res.ok) {
-                fetchCertifications();
-            } else {
-                alert('Failed to delete certification');
-            }
+            await adminService.deleteCertificationFn(id);
+            fetchCertifications();
         } catch (error) {
             console.error(error);
+            alert('Failed to delete certification');
         }
     };
 

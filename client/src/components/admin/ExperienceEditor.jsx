@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
+import adminService from '../../services/adminService';
 
-const ExperienceEditor = ({ token }) => {
+const ExperienceEditor = () => {
     const [experiences, setExperiences] = useState([]);
     const [newExperience, setNewExperience] = useState({
         company: '',
@@ -11,10 +12,9 @@ const ExperienceEditor = ({ token }) => {
     });
 
     const fetchExperience = useCallback(() => {
-        fetch('/api/experience')
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) setExperiences(data);
+        adminService.getExperienceFn()
+            .then(res => {
+                if (Array.isArray(res.data)) setExperiences(res.data);
             })
             .catch(err => console.error(err));
     }, []);
@@ -26,42 +26,24 @@ const ExperienceEditor = ({ token }) => {
     const handleAddExperience = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/experience', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(newExperience)
-            });
-            if (res.ok) {
-                fetchExperience();
-                setNewExperience({ company: '', role: '', startDate: '', endDate: '', description: '' });
-                alert('Experience added!');
-            } else {
-                alert('Failed to add experience');
-            }
+            await adminService.addExperienceFn(newExperience);
+            fetchExperience();
+            setNewExperience({ company: '', role: '', startDate: '', endDate: '', description: '' });
+            alert('Experience added!');
         } catch (error) {
             console.error(error);
+            alert('Failed to add experience');
         }
     };
 
     const handleDeleteExperience = async (id) => {
         if (!window.confirm('Are you sure?')) return;
         try {
-            const res = await fetch(`/api/experience/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (res.ok) {
-                fetchExperience();
-            } else {
-                alert('Failed to delete experience');
-            }
+            await adminService.deleteExperienceFn(id);
+            fetchExperience();
         } catch (error) {
             console.error(error);
+            alert('Failed to delete experience');
         }
     };
 

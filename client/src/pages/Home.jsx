@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Hero3D from '../components/Hero3D';
 import { FaJava, FaReact, FaNodeJs, FaDatabase, FaHtml5, FaCss3, FaJs, FaCertificate } from 'react-icons/fa';
 import { SiMongodb, SiTailwindcss, SiExpress } from 'react-icons/si';
+import dataService from '../services/dataService';
 
 // Mock Data
 const projectsData = [
@@ -53,67 +54,51 @@ const Home = () => {
     const handleContactSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(contactForm)
-            });
-            if (res.ok) {
-                alert('Message sent successfully!');
-                setContactForm({ name: '', email: '', subject: '', message: '' });
-            } else {
-                alert('Failed to send message.');
-            }
+            await dataService.sendContactMessage(contactForm);
+            alert('Message sent successfully!');
+            setContactForm({ name: '', email: '', subject: '', message: '' });
         } catch (error) {
             console.error(error);
+            alert('Failed to send message.');
         }
     };
-
-
-
-
-
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // In production, uncomment the fetch logic
-                const res = await fetch('/api/data');
-                if (res.ok) {
-                    const result = await res.json();
+                const result = await dataService.getPublicData();
 
-                    // Helper to handle potentially missing arrays
-                    const newProjects = result.projects && result.projects.length > 0 ? result.projects.map(p => ({
-                        id: p._id,
-                        title: p.title,
-                        category: p.category || 'Web',
-                        image: p.image || 'https://placehold.co/600x400/1e293b/white?text=Project',
-                        tools: p.technologies,
-                        liveLink: p.liveLink,
-                        repoLink: p.repoLink
-                    })) : projectsData;
+                // Helper to handle potentially missing arrays
+                const newProjects = result.projects && result.projects.length > 0 ? result.projects.map(p => ({
+                    id: p._id,
+                    title: p.title,
+                    category: p.category || 'Web',
+                    image: p.image || 'https://placehold.co/600x400/1e293b/white?text=Project',
+                    tools: p.technologies,
+                    liveLink: p.liveLink,
+                    repoLink: p.repoLink
+                })) : projectsData;
 
-                    const newSkills = result.skills && result.skills.length > 0 ? result.skills.map(s => ({
-                        name: s.name,
-                        icon: s.icon || null,
-                        category: s.category || 'Other'
-                    })) : skillsData;
+                const newSkills = result.skills && result.skills.length > 0 ? result.skills.map(s => ({
+                    name: s.name,
+                    icon: s.icon || null,
+                    category: s.category || 'Other'
+                })) : skillsData;
 
-                    const newCerts = result.certifications && result.certifications.length > 0 ? result.certifications : certificationsData;
-                    const newExperience = result.experience || [];
+                const newCerts = result.certifications && result.certifications.length > 0 ? result.certifications : certificationsData;
+                const newExperience = result.experience || [];
 
-                    const newHero = result.hero || {};
-                    const newAbout = result.about || {};
+                const newHero = result.hero || {};
+                const newAbout = result.about || {};
 
-                    setData({
-                        projects: newProjects,
-                        skills: newSkills,
-                        certifications: newCerts,
-                        experience: newExperience,
-                        hero: newHero,
-                        about: newAbout
-                    });
-                }
+                setData({
+                    projects: newProjects,
+                    skills: newSkills,
+                    certifications: newCerts,
+                    experience: newExperience,
+                    hero: newHero,
+                    about: newAbout
+                });
             } catch {
                 console.log('Using mock data, API not reachable');
             }

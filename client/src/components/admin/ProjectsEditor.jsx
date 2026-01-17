@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import adminService from '../../services/adminService';
 
-const ProjectsEditor = ({ token }) => {
+const ProjectsEditor = () => {
     const [projects, setProjects] = useState([]);
     const [newProject, setNewProject] = useState({
         title: '',
@@ -15,10 +16,9 @@ const ProjectsEditor = ({ token }) => {
     const fileInputRef = useRef(null);
 
     const fetchProjects = useCallback(() => {
-        fetch('/api/projects')
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) setProjects(data);
+        adminService.getProjectsFn()
+            .then(res => {
+                if (Array.isArray(res.data)) setProjects(res.data);
             })
             .catch(err => console.error(err));
     }, []);
@@ -35,13 +35,9 @@ const ProjectsEditor = ({ token }) => {
         formData.append('image', file);
 
         try {
-            const res = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await res.json();
-            if (data.imagePath) {
-                setNewProject({ ...newProject, image: data.imagePath });
+            const res = await adminService.uploadImageFn(formData);
+            if (res.data.imagePath) {
+                setNewProject({ ...newProject, image: res.data.imagePath });
             }
         } catch (error) {
             console.error('Upload failed', error);
@@ -56,42 +52,24 @@ const ProjectsEditor = ({ token }) => {
         };
 
         try {
-            const res = await fetch('/api/projects', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(formattedProject)
-            });
-            if (res.ok) {
-                fetchProjects();
-                setNewProject({ title: '', description: '', image: '', technologies: '', liveLink: '', repoLink: '', category: 'Web' });
-                alert('Project added!');
-            } else {
-                alert('Failed to add project');
-            }
+            await adminService.addProjectFn(formattedProject);
+            fetchProjects();
+            setNewProject({ title: '', description: '', image: '', technologies: '', liveLink: '', repoLink: '', category: 'Web' });
+            alert('Project added!');
         } catch (error) {
             console.error(error);
+            alert('Failed to add project');
         }
     };
 
     const handleDeleteProject = async (id) => {
         if (!window.confirm('Are you sure you want to delete this project?')) return;
         try {
-            const res = await fetch(`/api/projects/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (res.ok) {
-                fetchProjects();
-            } else {
-                alert('Failed to delete project');
-            }
+            await adminService.deleteProjectFn(id);
+            fetchProjects();
         } catch (error) {
             console.error(error);
+            alert('Failed to delete project');
         }
     };
 

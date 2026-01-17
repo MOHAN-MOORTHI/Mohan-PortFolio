@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 import { FaSignOutAlt, FaHome, FaUser, FaCode, FaCertificate, FaBriefcase, FaEnvelope, FaLayerGroup, FaLink } from 'react-icons/fa';
 import HeroEditor from '../components/admin/HeroEditor';
 import AboutEditor from '../components/admin/AboutEditor';
@@ -12,17 +13,17 @@ import FooterEditor from '../components/admin/FooterEditor';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
-    const token = localStorage.getItem('token');
+    const { logout, currentUser } = useAuth();
     const [activeTab, setActiveTab] = useState('projects');
 
     useEffect(() => {
-        if (!token) {
+        if (!currentUser) {
             navigate('/login');
         }
-    }, [token, navigate]);
+    }, [currentUser, navigate]);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        logout();
         navigate('/');
     };
 
@@ -39,14 +40,14 @@ const AdminDashboard = () => {
 
     const renderContent = () => {
         switch (activeTab) {
-            case 'hero': return <HeroEditor token={token} />;
-            case 'about': return <AboutEditor token={token} />;
-            case 'skills': return <SkillsEditor token={token} />;
-            case 'experience': return <ExperienceEditor token={token} />;
-            case 'certifications': return <CertificationsEditor token={token} />;
-            case 'projects': return <ProjectsEditor token={token} />;
-            case 'footer': return <FooterEditor token={token} />;
-            case 'contact': return <ContactViewer token={token} />;
+            case 'hero': return <HeroEditor />;
+            case 'about': return <AboutEditor />;
+            case 'skills': return <SkillsEditor />;
+            case 'experience': return <ExperienceEditor />;
+            case 'certifications': return <CertificationsEditor />;
+            case 'projects': return <ProjectsEditor />;
+            case 'footer': return <FooterEditor />;
+            case 'contact': return <ContactViewer />;
             default: return <div className="text-white">Select a tab</div>;
         }
     };

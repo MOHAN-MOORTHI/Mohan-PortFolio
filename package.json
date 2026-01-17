@@ -2,16 +2,18 @@
     "name": "mohan-portfolio-root",
     "version": "1.0.0",
     "scripts": {
-        "build": "cd client && npm install && npm run build && cd .. && mkdir -p public && cp -r client/dist/* public/",
+        "build": "cd client && npm install && npm run build && cd .. && shx mkdir -p public && shx cp -r client/dist/* public/",
         "install-server": "cd server && npm install",
-        "dev": "concurrently \"cd server && npm start\" \"cd client && npm run dev\""
+        "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\""
     },
     "devDependencies": {
-        "concurrently": "^8.0.0"
+        "concurrently": "^8.0.0",
+        "shx": "^0.4.0"
     },
     "dependencies": {
         "bcryptjs": "^3.0.3",
         "cloudinary": "^1.41.3",
+        "compression": "^1.8.1",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",
         "express": "^5.2.1",

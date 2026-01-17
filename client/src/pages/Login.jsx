@@ -1,37 +1,27 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+import { useAuth } from '../hooks/useAuth';
 
 const Login = () => {
     const [formData, setFormData] = useState({ username: '', password: '' });
+    const { login, currentUser } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
+        if (currentUser) {
             navigate('/admin');
         }
-    }, [navigate]);
+    }, [currentUser, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-            const data = await res.json();
-
-            if (res.ok) {
-                localStorage.setItem('token', data.token);
-                navigate('/admin');
-            } else {
-                alert(data.message || 'Login failed');
-            }
+            await login(formData.username, formData.password);
+            navigate('/admin');
         } catch (err) {
             console.error(err);
-            alert('Something went wrong');
+            alert(err.response?.data?.message || 'Login failed');
         }
     };
 

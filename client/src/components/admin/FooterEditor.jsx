@@ -1,43 +1,31 @@
 import { useState, useEffect } from 'react';
+import adminService from '../../services/adminService';
 
-const FooterEditor = ({ token }) => {
+const FooterEditor = () => {
     const [aboutData, setAboutData] = useState({ socialLinks: {} });
 
     useEffect(() => {
-        fetch('/api/about', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-            .then(res => res.json())
-            .then(data => {
+        adminService.getAboutFn()
+            .then(res => {
+                const data = res.data;
                 if (data) setAboutData({
-                    // Preserve other about data if needed when saving, but we only edit socials here.
-                    // Actually, the API might overwrite everything if we send partial data? 
-                    // Let's check the backend.
                     ...data,
                     socialLinks: data.socialLinks || {}
                 });
             })
             .catch(err => console.error(err));
-    }, [token]);
+    }, []);
 
     const handleUpdateFooter = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/about', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(aboutData) // We send the whole object back to avoid data loss
-            });
-            if (res.ok) {
-                alert('Footer section updated!');
-            } else {
-                alert('Failed to update footer section');
-            }
+            // Only send socialLinks
+            const { socialLinks } = aboutData;
+            await adminService.updateAboutFn({ socialLinks });
+            alert('Footer section updated!');
         } catch (error) {
             console.error(error);
+            alert('Failed to update footer section');
         }
     };
 
@@ -45,14 +33,14 @@ const FooterEditor = ({ token }) => {
         <div className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-xl">
             <h2 className="text-2xl font-bold mb-6 text-white">Edit Footer Section</h2>
             <form onSubmit={handleUpdateFooter} className="space-y-6">
-                
-                 <div>
+
+                <div>
                     <h3 className="text-lg font-semibold text-secondary mb-4">Contact & Social Links</h3>
                     <p className="text-gray-400 text-sm mb-4">These links will appear in the footer section of the website.</p>
-                    
+
                     <div className="grid md:grid-cols-2 gap-4">
                         <div className="col-span-2">
-                             <label className="block text-gray-400 mb-2 font-medium">Email Address (Footer Contact)</label>
+                            <label className="block text-gray-400 mb-2 font-medium">Email Address (Footer Contact)</label>
                             <input
                                 value={aboutData.socialLinks?.email || ''}
                                 onChange={e => setAboutData({ ...aboutData, socialLinks: { ...aboutData.socialLinks, email: e.target.value } })}

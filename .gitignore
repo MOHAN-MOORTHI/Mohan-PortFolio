@@ -5,3 +5,7 @@ dist
 coverage
 build
 .vscode
+
+# Server specific
+server/uploads
+*.log

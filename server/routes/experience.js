@@ -1,66 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const Experience = require('../models/Experience');
+const { getExperience, addExperience, updateExperience, deleteExperience } = require('../controllers/experienceController');
 const auth = require('../middleware/auth');
 
 // Get all experience (Public)
-router.get('/', async (req, res) => {
-    try {
-        const experience = await Experience.find().sort({ startDate: -1 });
-        res.json(experience);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+router.get('/', getExperience);
 
 // Add experience (Protected)
-router.post('/', auth, async (req, res) => {
-    const experience = new Experience({
-        company: req.body.company,
-        role: req.body.role,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
-        description: req.body.description
-    });
-
-    try {
-        const newExperience = await experience.save();
-        res.status(201).json(newExperience);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
+router.post('/', auth, addExperience);
 
 // Update experience (Protected)
-router.put('/:id', auth, async (req, res) => {
-    try {
-        const experience = await Experience.findById(req.params.id);
-        if (!experience) return res.status(404).json({ message: 'Experience not found' });
-
-        if (req.body.company) experience.company = req.body.company;
-        if (req.body.role) experience.role = req.body.role;
-        if (req.body.startDate) experience.startDate = req.body.startDate;
-        if (req.body.endDate !== undefined) experience.endDate = req.body.endDate;
-        if (req.body.description) experience.description = req.body.description;
-
-        const updatedExperience = await experience.save();
-        res.json(updatedExperience);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+router.put('/:id', auth, updateExperience);
 
 // Delete experience (Protected)
-router.delete('/:id', auth, async (req, res) => {
-    try {
-        const experience = await Experience.findById(req.params.id);
-        if (!experience) return res.status(404).json({ message: 'Experience not found' });
-
-        await experience.deleteOne();
-        res.json({ message: 'Experience deleted' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+router.delete('/:id', auth, deleteExperience);
 
 module.exports = router;

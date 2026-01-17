@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa';
+import dataService from '../services/dataService';
 
 const Footer = () => {
     const [socials, setSocials] = useState({});
 
     useEffect(() => {
-        fetch('/api/about')
-            .then(res => res.json())
+        dataService.getAboutData()
             .then(data => {
                 if (data && data.socialLinks) setSocials(data.socialLinks);
             })
